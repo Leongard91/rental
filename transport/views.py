@@ -33,7 +33,7 @@ def login(request):
             return render(request, "transport/login.html", instance)
 
     instance['form'] = LoginForm()
-    return render(request, "network/log.html", instance)
+    return render(request, "transport/login.html", instance)
 
 def logout(request):
     logout(request)
@@ -63,7 +63,7 @@ def register(request):
         return HttpResponseRedirect(reverse('index'))
 
     instance['form'] = NewUserForm()
-    return render(request, 'transport/log.html', instance)
+    return render(request, 'transport/register.html', instance)
 
 
 
