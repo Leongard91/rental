@@ -66,7 +66,6 @@ def register(request):
     instance['form'] = NewUserForm()
     return render(request, 'transport/register.html', instance)
 
-
 def get_offers(request):
 
     # Get start and end points
