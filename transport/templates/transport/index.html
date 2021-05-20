@@ -1,0 +1,11 @@
+{% extends 'transport/layout.html' %}
+{% load static %}
+
+{% block title %}Rent{% endblock %}
+
+{% block body %}
+    <h2>All Offers:</h2>
+    <div id="offers"></div>
+
+    <script src="{% static 'transport/index.js' %}" type="text/babel"></script>
+{% endblock %}

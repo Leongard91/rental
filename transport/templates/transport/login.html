@@ -1,1 +1,28 @@
-1
+{% extends 'transport/layout.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+    <div class="mb-3">
+        <h2>Login</h2>
+
+        {% if message %}
+            <div class="alert alert-primary">{{ message }}</div>
+        {% endif %}
+    
+        {% if error %}
+            <div  class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+    
+        <form method="POST">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" class='btn btn-primary' value="Login">
+        </form>
+        <br>
+        Don't have an account? <a href="{% url 'register' %}">Register In here.</a>
+
+    </div>
+
+{% endblock %}
