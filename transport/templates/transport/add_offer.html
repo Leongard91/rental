@@ -15,7 +15,7 @@
             <div  class="alert alert-danger">{{ error }}</div>
         {% endif %}
 
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form }}
             <input type="submit" class='btn btn-primary' value="Add">

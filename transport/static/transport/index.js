@@ -3,17 +3,17 @@
 let counter = 1;
 
 // Download 10 offers
-const quantity = 10;
+const quantity = 2;
 
 // When DOM loads, render 10 first offers
 document.addEventListener('DOMContentLoaded', load());
 
 // When scrolled to bottom, load more 10 offers
-/*window.onscroll = () => {
+window.onscroll = () => {
     if (window.innerHeight + window.scrolY >= document.body.offsetHeight) {
         load();
     }
-}*/
+}
 
 class Offers extends React.Component {
     render() {

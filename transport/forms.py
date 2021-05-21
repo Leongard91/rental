@@ -17,7 +17,7 @@ class NewUserForm(forms.Form):
 
 class NewTransportForm(forms.Form):
     name = forms.CharField(label='', max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Title', 'class': 'form-control'}))
-    description = forms.CharField(label='', max_length=500, widget=forms.Textarea(attrs={'placeholder': 'Description', 'class' : 'form-control', 'row': '3'}))
+    description = forms.CharField(label='', max_length=500, widget=forms.Textarea(attrs={'placeholder': 'Description', 'class' : 'form-control'}))
     category = forms.ChoiceField(label='', choices=CATEGORY_CHOISES, widget=forms.Select(attrs={'placeholder': 'Choose Category', 'class': 'form-control'}))
     type = forms.ChoiceField(label='', choices=TYPE_CHOISES, widget=forms.Select(attrs={'placeholder': 'Choose Type', 'class': 'form-control'}))
     price_per_day = forms.DecimalField(label='', max_digits=7, decimal_places=2, widget=forms.NumberInput(attrs={'placeholder': 'Price, USD/day', 'class': 'form-control'}))

@@ -3,6 +3,8 @@
 <html lang="en">
     <head>
         <title>{% block title %}Ren Car{% endblock %}</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, width=device-width">
         <link href="{% static 'transport/styles.css' %}" rel="stylesheet">
         <link href="" rel="icon">
 
@@ -13,10 +15,10 @@
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">Rent</a>
+            <a class="navbar-brand" style="font-weight: 800; font-size: 30px;" href="{% url 'index' %}">RentoCar</a>
           
             <div>
-              <ul class="navbar-nav mr-auto">
+              <ul class="navbar-nav ml-auto mt-2">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="#"><strong>{{ user.username }}</strong></a>
@@ -41,6 +43,12 @@
                     </li>
                 {% endif %}
               </ul>
+            </div>
+        </nav>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="navbar-nav ml-auto mt-2" style="border: none">
+                <input type="text" name="" id="">
+                <input type="text" name="" id="">
             </div>
         </nav>
         

@@ -7,7 +7,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 import time
+from django import forms
 import json
+from django.core.files.storage import FileSystemStorage
 
 from .models import User, Response, Pay_method, Category, Type, Additional, Transport, Deal
 from .forms import NewUserForm, LoginForm, NewTransportForm
@@ -93,7 +95,30 @@ def get_offers(request):
         'offers': data
     }, status=200)
 
+@login_required(login_url='login')
 def add_offer(request):
     instance = {}
+    
+    if request.method == 'POST':
+        form = NewTransportForm(request.POST, request.FILES)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            description = form.cleaned_data['description']
+            category = Category.objects.get(pk=form.cleaned_data['category'])
+            type = Type.objects.get(pk=form.cleaned_data['type'])
+            price_per_day = form.cleaned_data['price_per_day']
+            owner = request.user
+            photo = request.FILES['photo']
+            Transport.objects.create(name=name, description=description, category=category, type=type, price_per_day=price_per_day, owner=owner, photo=photo)
+            instance['message'] = 'SUCCESS'
+            return render(request, 'transport/add_offer.html', instance)
+        instance['error'] = 'Invalid Input'
+        return render(request, 'transport/add_offer.html', instance)
     instance['form'] = NewTransportForm()
     return render(request, 'transport/add_offer.html', instance)
+
+def offer_view(request, offer_id):
+    instance = {}
+    offer = Transport.objects.get(pk=offer_id)
+    instance['offer'] = offer
+    return render(request, 'transport/offer_page.html', instance)

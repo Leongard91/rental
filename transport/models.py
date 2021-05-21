@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 import os
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+
 def transport_directory_path(instance, filename):
     return "owner_{0}/{1}".format(instance.owner.pk, filename)
 
