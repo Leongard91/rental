@@ -1,5 +1,11 @@
+body {
+    min-height: 75rem;
+}
+
 .body {
     margin: 12px;
+
+      
 }
 
 .mb-3 {
