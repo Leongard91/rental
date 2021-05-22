@@ -3,10 +3,9 @@ body {
 }
 
 .body {
-    margin: 12px;
-
-      
+    margin: 12px; 
 }
+
 
 .mb-3 {
     width: 300px;
@@ -29,6 +28,7 @@ body {
     margin: 10px;
 }
 
+/*
 .row {
 
     border: 1px solid grey;
@@ -37,7 +37,7 @@ body {
     margin-top: 10px;
     margin-left: auto;
     margin-right: auto;
-}
+}*/
 
 
 #offers {

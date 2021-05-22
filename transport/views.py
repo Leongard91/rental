@@ -77,13 +77,16 @@ def get_offers(request):
     # Generate lists of offers
     data = []
     for offer in Transport.objects.all().order_by('-timestamp'):
+        timestamp = offer.timestamp
+        timestamp = timestamp.strftime('%b %d, %Y, %#I:%M %p')
         offer_data = {
             'id': offer.pk,
             'name': offer.name,
             'description': offer.description,
             'price_per_day': offer.price_per_day,
             'photo': 'media/' + offer.photo.name,
-            'timestamp': offer.timestamp
+            'pick_up_location': offer.pick_up_location,
+            'timestamp': timestamp
         }
         data.append(offer_data)
 
@@ -104,12 +107,18 @@ def add_offer(request):
         if form.is_valid():
             name = form.cleaned_data['name']
             description = form.cleaned_data['description']
-            category = Category.objects.get(pk=form.cleaned_data['category'])
-            type = Type.objects.get(pk=form.cleaned_data['type'])
+            try: 
+                category = Category.objects.get(pk=form.cleaned_data['category'])
+                type = Type.objects.get(pk=form.cleaned_data['type'])
+            except: 
+                    instance['error'] = 'Category and Type need to be entered.'
+                    return render(request, 'transport/add_offer.html', instance)
+            pick_up_location = form.cleaned_data['pick_up_location'] 
             price_per_day = form.cleaned_data['price_per_day']
             owner = request.user
             photo = request.FILES['photo']
-            Transport.objects.create(name=name, description=description, category=category, type=type, price_per_day=price_per_day, owner=owner, photo=photo)
+            new_tr = Transport(name=name, description=description, category=category, type=type, pick_up_location=pick_up_location, price_per_day=price_per_day, owner=owner, photo=photo)
+            new_tr.save()
             instance['message'] = 'SUCCESS'
             return render(request, 'transport/add_offer.html', instance)
         instance['error'] = 'Invalid Input'

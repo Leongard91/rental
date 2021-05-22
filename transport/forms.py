@@ -21,4 +21,5 @@ class NewTransportForm(forms.Form):
     category = forms.ChoiceField(label='', choices=CATEGORY_CHOISES, widget=forms.Select(attrs={'placeholder': 'Choose Category', 'class': 'form-control'}))
     type = forms.ChoiceField(label='', choices=TYPE_CHOISES, widget=forms.Select(attrs={'placeholder': 'Choose Type', 'class': 'form-control'}))
     price_per_day = forms.DecimalField(label='', max_digits=7, decimal_places=2, widget=forms.NumberInput(attrs={'placeholder': 'Price, USD/day', 'class': 'form-control'}))
+    pick_up_location = forms.CharField(label='', max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Pick-up location (Country, State, City)', 'class': 'form-control'}))
     photo = forms.FileField(label='', widget=forms.FileInput(attrs={'class': 'form-control', 'style': 'height:20%; pading: 0px;'}))

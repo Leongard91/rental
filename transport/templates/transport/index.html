@@ -4,8 +4,13 @@
 {% block title %}Rent{% endblock %}
 
 {% block body %}
-    <h2>All Offers:</h2>
-    <div id="offers"></div>
+    <h2 style="color: #2798F8; font-weight: 700; text-align: center; margin: 60px;">All Offers:</h2>
+    <div class="row justify-content-md-center" style="text-align: center;">
+        <div class="col col-lg-2"><button type="button" class="btn btn-link"><b style="font-size: 20px;">Economy</b></button></div>
+        <div class="col col-lg-2"><button type="button" class="btn btn-link"><b style="font-size: 20px;">Standart</b></button></div>
+        <div class='col col-lg-2'><button type="button" class="btn btn-link"><b style="font-size: 20px;">Luxury</b></button></div>
+    </div>
+    <div id="offers" style="margin-left: 15%; margin-right: 5%; text-align: center;"></div>
 
     <script src="{% static 'transport/index.js' %}" type="text/babel"></script>
 {% endblock %}

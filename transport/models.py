@@ -7,6 +7,9 @@ from django.utils.translation import gettext_lazy as _
 import os
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+# For img resize
+from PIL import Image
+
 
 def transport_directory_path(instance, filename):
     return "owner_{0}/{1}".format(instance.owner.pk, filename)
@@ -64,12 +67,23 @@ class Transport(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="own_transport")
     clients = models.ManyToManyField(User, blank=True, related_name="rented_transport")
     photo = models.ImageField(default='default.png', upload_to=transport_directory_path, blank=True, validators=[image_format_validator])
+    pick_up_location = models.CharField(max_length=100, null=True, blank=True,)
     timestamp = models.DateTimeField(auto_now_add=True)
     in_users_lists = models.ManyToManyField(User, blank=True, related_name="transports_in_list")
     def __str__(self):
         return f"{self.pk}.{self.name}.{self.price_per_day}.Clients: {self.clients.all().count()}"
     def is_valid_transport(self):
         return self.owner not in self.clients.all()
+    def save(self):
+        super().save()  # saving image first
+        img = Image.open(self.photo.path) # Open image using self
+        img.thumbnail((300,250))
+        img_w, img_h = img.size
+        background = Image.new(mode = "RGB", size = (300, 250))
+        bg_w, bg_h = background.size
+        offset = ((bg_w - img_w) // 2, (bg_h - img_h) // 2)
+        background.paste(img, offset)
+        background.save(self.photo.path)
     
 
 class Deal(models.Model):
