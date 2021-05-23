@@ -1,0 +1,87 @@
+{% extends 'transport/layout.html' %}
+{% load static %}
+
+{% block title %}Search{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col" style="margin-left: 5%;">
+            <h3 style="color: #2798F8; font-weight: 700; text-align: left; margin-bottom: 28px;">Filter</h3>
+            <div class="card mb-2 rounded-6 shadow p-2">
+                <div class="card-body">
+                    <p style="color: #2798F8; font-weight: 700; text-align: left; font-size: larger; margin-bottom: 2%;"><b>Transport type:</b></p>
+                    <ul class="list-group" style="padding-left: 20px; ">
+                        {% for type in types %}
+                            <li class="list-group-item" style="border: none; padding: 1%; color: #2798F8;">
+                                <input class="form-check-input me-1" type="checkbox" style="zoom: 1.15;" value="{{ type.type_name }}" aria-label="...">
+                                {{ type.type_name }}
+                            </li>
+                        {% endfor %}
+                      </ul>
+
+                    <p style="color: #2798F8; font-weight: 700; text-align: left; font-size: larger; margin-bottom: 2%; margin-top: 5%;"><b>Category:</b></p>
+                    <ul class="list-group" style="padding-left: 20px; ">
+                        {% for category in categoryes %}
+                            <li class="list-group-item" style="border: none; padding: 1%; color: #2798F8;">
+                                <input class="form-check-input me-1" type="checkbox" style="zoom: 1.15;" value="{{ category.category_name }}" aria-label="...">
+                                {{ category.category_name }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <p style="color: #2798F8; font-weight: 700; text-align: left; font-size: larger; margin-bottom: 2%; margin-top: 5%;"><b>Price range:</b></p>
+                    <div id="range"></div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-9">
+            <div class="row">
+                <div class="col">
+                    <h3 style="color: #2798F8; font-weight: 700; text-align: left; margin-left: 0%;">Your search results:</h3>
+                </div>
+                <div class="col" style="text-align: right;">
+                    <label for="order">Sort by:</label>
+                    <select class="form-select" name="order" id="order">
+                        <option selected value='timestamp-True'>New</option>
+                        <option value="timestamp-False">Old</option>
+                        <option value="price_per_day-True">Cheaper</option>
+                        <option value="price_per_day-False">Expensier</option>
+                        <option value="name-False">Title</option>
+                        <option value="name-True">Title (rev)</option>
+                    </select>
+                </div>      
+            </div>
+            <div id="search_results" style="text-align: center; margin: 0%; ">
+                <div id="new_search" >
+                    {% for total_price, offer in offers %}
+                        <div class="card mb-2 rounded-6 shadow p-2" style='min-height: 300px; margin-top: 30px; min-width: 300px'>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class='col' style='text-align: left; color: #2798F8; min-width: 250px; margin-bottom: 20px;'>
+                                        <h4>{{ offer.name }}</h4>
+                                        <h5>Total price for {{ time_delta }} day(s): {{ total_price }} USD </h5>
+                                        <div class="lh-sm">{{ offer.description }}</div>
+                                        <div class="align-bottom" style='color: grey; font-size: 15px;'>Created in {{ offer.timestamp }}</div>
+                                    </div>
+                                    <div class='col' style='text-align: right;'>
+                                        <img src='{{ offer.photo.url }}' alt="image" class="rounded float-start " style='width: 250px;' />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row align-bottom" style='text-align: left; margin: 10px'>
+                                <div class="col" style='color: #2798F8'><img src='https://raw.githubusercontent.com/Leongard91/rental/main/transport/static/pointer.png' style='width: 23px; vertical-align: -20%; margin-right: 0px;' />{{ offer.pick_up_location }}</div> 
+                                <div class="col" style='text-align: right;'><button type="button" class="btn btn-warning" style='width: 125px; color: white;'><b>RENT</b></button></div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div id='filtered_search' style="margin-top: 30px;">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="{% static 'transport/search.js' %}" type="text/babel"></script>
+{% endblock %}

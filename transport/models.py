@@ -45,12 +45,12 @@ class Pay_method(models.Model):
 class Category(models.Model):
     category_name = models.CharField(max_length=20)
     def __str__(self):
-        return f"{self.category_name}"
-
+        return f"{self.pk}. {self.category_name}"
+ 
 class Type(models.Model):
     type_name = models.CharField(max_length=40)
     def __str__(self):
-        return f"{self.type_name}"
+        return f"{self.pk}. {self.type_name}"
 
 class Additional(models.Model):
     add_name = models.CharField(max_length=50)
@@ -87,14 +87,14 @@ class Transport(models.Model):
     
 
 class Deal(models.Model):
-    rent_transport = models.ForeignKey(Transport, on_delete=models.DO_NOTHING, related_name="deals")
-    owner = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="give_deals")
-    client = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="rent_deals")
+    rent_transport = models.ForeignKey(Transport, on_delete=models.CASCADE, related_name="deals")
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="give_deals")
+    client = models.ForeignKey(User, on_delete=models.CASCADE, related_name="rent_deals")
     start_date = models.DateField()
     close_date = models.DateField()
     additionals = models.ManyToManyField(Additional, blank=True, related_name='on_deals')
     total_price = models.DecimalField(max_digits=7, decimal_places=2, null=True)
-    pay_method = models.ForeignKey(Pay_method, on_delete=DO_NOTHING, related_name='deals')
+    pay_method = models.ForeignKey(Pay_method, on_delete=models.CASCADE, related_name='deals')
     def __str__(self):
         return f"Owner: {self.owner.username}, Client: {self.client.username}, {self.total_price}, start-{self.start_date}"
     def is_valid_deal(self):
