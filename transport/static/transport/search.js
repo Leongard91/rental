@@ -38,7 +38,7 @@ class Offers extends React.Component {
         const offers = this.props.data.offers;
         const offeritems = offers.map((offer) =>
         <div key={offer.id}>
-            <div className="card mb-2 rounded-6 shadow p-2" style={{ minHeight: '300px', marginTop: '30px', minWidth: '300px' }}>
+            <div className="card mb-2 rounded-6 shadow p-2" style={{ minHeight: '300px', marginTop: '0px', minWidth: '300px' }}>
                 <div className="card-body">
                     <div className="row">
                         <div className='col' style={{ textAlign: 'left', color: '#2798F8', minWidth: '250px', marginBottom: '20px' }}>
@@ -53,7 +53,7 @@ class Offers extends React.Component {
                     </div>
                 </div>
                 <div className="row align-bottom" style={{ textAlign: 'left', margin: '10px'}}>
-                    <div className="col" style={{ color: '#2798F8' }}><img src='https://raw.githubusercontent.com/Leongard91/rental/main/transport/static/pointer.png' style={{ width: '23px', verticalAlign: '-20%', marginRight: '0px'}} />{offer.pick_up_location}</div> 
+                    <div className="col" style={{ color: '#2798F8' }}><img src='static/transport/icons/icon_location.svg' style={{ width: '14px', verticalAlign: '-15%', marginRight: '5px'}} />{offer.pick_up_location}</div> 
                     <div className="col" style={{ textAlign: 'right' }}><button type="button" className="btn btn-warning" style={{ width: '125px', color: 'white' }}><b>RENT</b></button></div>
                 </div>
             </div>

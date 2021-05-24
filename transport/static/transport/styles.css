@@ -1,9 +1,26 @@
 body {
     min-height: 75rem;
+    background-color: #FBFDFC;
+    font-family: sans-serif;
+    
+}
+
+#header {
+    background-image: url(https://raw.githubusercontent.com/Leongard91/rental/main/transport/static/transport/icons/header_backgroundm.jpg);
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  
+    /* Needed to position the navbar */
+    position: relative;
 }
 
 .body {
-    margin: 12px; 
+    margin: 12px;
+    background-color: #FBFDFC;
+    margin-top: 0px; 
 }
 
 

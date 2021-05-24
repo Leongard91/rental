@@ -25,7 +25,7 @@ class Offers extends React.Component {
                     </div>
                 </div>
                 <div className="row align-bottom" style={{ textAlign: 'left', margin: '10px'}}>
-                    <div className="col" style={{ color: '#2798F8' }}><img src='https://raw.githubusercontent.com/Leongard91/rental/main/transport/static/pointer.png' style={{ width: '23px', verticalAlign: '-20%', marginRight: '0px'}} />{offer.pick_up_location}</div> 
+                    <div className="col" style={{ color: '#2798F8' }}><img src='https://raw.githubusercontent.com/Leongard91/rental/main/transport/static/transport/pointer.png' style={{ width: '23px', verticalAlign: '-20%', marginRight: '0px'}} />{offer.pick_up_location}</div> 
                     <div className="col" style={{ textAlign: 'right' }}><button type="button" className="btn btn-warning" style={{ width: '125px', color: 'white' }}><b>RENT</b></button></div>
                 </div>
             </div>

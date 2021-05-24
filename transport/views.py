@@ -5,14 +5,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
 import time
-from django import forms
-import json
-from django.core.files.storage import FileSystemStorage
 from datetime import date
-import re
-import json
+from django.db.models import Max, Min
 
 from .models import User, Response, Pay_method, Category, Type, Additional, Transport, Deal
 from .forms import NewUserForm, LoginForm, NewTransportForm
@@ -49,6 +44,12 @@ def search(f):
             time_delta = end_date - start_date
             instance['time_delta'] = time_delta.days
             request.session['time_delta'] = time_delta.days
+
+            # Price range
+            max_price = Transport.objects.aggregate(Max('price_per_day'))['price_per_day__max']
+            min_price = Transport.objects.aggregate(Min('price_per_day'))['price_per_day__min']
+            instance['max_price'] = max_price * time_delta.days
+            instance['min_price'] = min_price * time_delta.days
 
             # Filtering
             filtered_transports = []
