@@ -4,8 +4,8 @@
 {% block title %}Search{% endblock %}
 
 {% block body %}
-    <div class="row" style="padding-top: 40px; margin-top:0px;">
-        <div class="col" style="margin-left: 5%;">
+    <div class="row " style="padding-top: 40px; margin:0px;">
+        <div class="col" style="margin-left: 5%; max-width: 300px;">
             <h5 style="font-weight: 700; text-align: left; margin-bottom: 10px; min-height: 30px;">Filter</h5>
             <div class="card mb-2 rounded-6 shadow p-2" style="border-radius: 15px;">
                 <div class="card-body">
@@ -35,7 +35,7 @@
             </div>
 
         </div>
-        <div class="col-9">
+        <div class="col" style="width:100%">
             <div class="row" style="max-width: 1050px;">
                 <div class="col">
                     <h3 style="font-weight: 700; text-align: left; margin-left: 0%; margin-bottom: 8px; margin-top: 0px;">Your search results:</h3>
@@ -47,6 +47,8 @@
                         <option value="timestamp-False">Older</option>
                         <option value="price_per_day-False">Cheaper</option>
                         <option value="price_per_day-True">Expensier</option>
+                        <option value="owner_rating-False">Best Rating</option>
+                        <option value="owner_rating-True">Worst Rating</option>
                         <option value="name-False">Title</option>
                         <option value="name-True">Title (rev)</option>
                     </select>
@@ -54,31 +56,31 @@
             </div>
             <div id="search_results" style="text-align: center; margin: 0%; ">
                 <div id="new_search">
-                    {% for total_price, offer in offers %}
+                    {% for owner_rating, responses_count, total_price, offer in offers %}
                         <div class="card mb-2 rounded-6 shadow p-2" style='min-height: 300px; min-width: 300px; max-width: 1000px; border-radius: 15px;'>
                             <div class="card-body" style='padding: 15px;'>
                                 <div class="row">
-                                    <div class='col' style='text-align: left; max-width: 340px;'>
-                                        <img src='{{ offer.photo.url }}' alt="image"  style='width: 300px; border-radius: 10px;' />
+                                    <div class='col' style='text-align: left;min-width: 270px; max-width: 340px;'>
+                                        <img src='{{ offer.photo.url }}' alt="image"  style='max-width: 100%; min-width: none; border-radius: 10px;' />
                                     </div>
                                     <div class='col' style='text-align: left; min-width: 250px;margin-top: 5px; margin-bottom: 0px; border-right: 1px solid #2a9d8f;'>
                                         <h4 style="color: #2a9d8f;">{{ offer.name }}</h4>
                                         <br>
-                                        <div name="icons_gread" style="max-width: 150px;">
+                                        <div name="icons_gread" style="max-width: 200px;">
                                             <div class="row">
-                                                <div class="col" style="margin-top: 7px;"><img src='{% static "transport/icons/icon_man.svg" %}' style='width: 17px; vertical-align: -10%; margin-right: 5px;' />1</div>
-                                                <div class="col" style="margin-top: 7px;"><img src='{% static "transport/icons/icon_conditioner.svg" %}' style='width: 17px; vertical-align: -15%; margin-right: 5px;' />A/C</div>
+                                                <div class="col" style="margin-top: 7px;"><img src='{% static "transport/icons/icon_man.svg" %}' style='width: 17px; vertical-align: -10%; margin-right: 5px;' />{{ offer.passenger_places }}</div>
+                                                <div class="col" style="margin-top: 7px;"><img src='{% static "transport/icons/icon_conditioner.svg" %}' style='width: 17px; vertical-align: -15%; margin-right: 5px;' />A/C {{ offer.air_conditioner }}</div>
                                             </div>
                                             <div class="row">
-                                                <div class="col" style="margin-top: 7px;"><img src='{% static "transport/icons/icon_bagage.svg" %}' style='width: 17px; vertical-align: -10%; margin-right: 5px;' />2</div>
-                                                <div class="col" style="margin-top: 7px;"><img src='{% static "transport/icons/icon_gearbox.svg" %}' style='width: 17px; vertical-align: -10%; margin-right: 5px;' />A</div>
+                                                <div class="col" style="margin-top: 7px;"><img src='{% static "transport/icons/icon_bagage.svg" %}' style='width: 17px; vertical-align: -10%; margin-right: 5px;' />{{ offer.baggage_places }}</div>
+                                                <div class="col" style="margin-top: 7px;"><img src='{% static "transport/icons/icon_gearbox.svg" %}' style='width: 17px; vertical-align: -10%; margin-right: 5px;' />{{ offer.automat_gearbox }}</div>
                                             </div>
                                         </div>
                                         <br><br>
                                         <div style='text-align: left; height: 100%; margin-top: auto;'>
                                             <div class='row'>
-                                                <div class="col" style="font-weight: 800; margin-top: 7px;">{{ offer.owner.username }}</div>
-                                                <div class="col" style="margin-top: 7px;"><img src='{% static "transport/icons/icon_location.svg" %}' style='width: 14px; vertical-align: -15%; margin-right: 5px;' />{{ offer.pick_up_location }}</div>
+                                                <div class="col" style="margin-top: 7px;"><a href="#" class="btn btn-link" style="color: black; padding: 0%; font-weight: 800;">{{ offer.owner.username }}</a></div>
+                                                <div class="col" style="margin-top: 7px; font-size: 17px;"><img src='{% static "transport/icons/icon_star.svg" %}' style='width: 18px; vertical-align: -11%; margin-right: 5px;' />{{ owner_rating }}/<span style="font-size: 11.5px;">5</span> <a href="#" class="btn btn-link" style="font-size: 15px; color: black; padding: 0%; padding-bottom: 3px; text-decoration: underline;">{{ responses_count }} reviews</a></div>
                                             </div>
                                             <div class='row'>
                                                 <div class="col" style="margin-top: 7px;"><img src='{% static "transport/icons/icon_location.svg" %}' style='width: 14px; vertical-align: -15%; margin-right: 5px;' />{{ offer.pick_up_location }}</div>
@@ -96,7 +98,7 @@
                                         <div class="row align-bottom" style='text-align: left;'>
                                             <div class="col" style='margin-bottom: 10px;'><img src='{% static "transport/icons/check.png" %}' style='width: 20px; vertical-align: -10%; margin-right: 5px;' />Free canelation</div> 
                                         </div>
-                                        <button type="button" class="btn btn-warning" style='width: 100%; color: white;'><b>DETAILS</b></button>
+                                        <a href="/details/{{ offer.pk }}"><button type="button" class="btn btn-warning" style='width: 100%; color: white;'><b>DETAILS</b></button></a>
                                     </div>
                                 </div>
                             </div>

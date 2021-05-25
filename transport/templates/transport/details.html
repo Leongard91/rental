@@ -1,0 +1,112 @@
+{% extends 'transport/layout.html' %}
+{% load static %}
+
+{% block title %}New Transport{% endblock %}
+
+{% block body %}
+    <div class="row " style="padding-top: 40px; margin:0px;">
+        <div class="col" style="width:100%">
+            <h3 style="font-weight: 700; text-align: left; margin-left: 20%; margin-bottom: 15px; margin-top: 0px;">Details</h3>
+            <div id="offer_info">
+                <div class="card mb-2 rounded-6 shadow p-2" style='min-height: 300px; min-width: 300px; max-width: 1000px; border-radius: 15px; margin-left: auto; margin-right: auto;'>
+                    <div class="card-body" style='padding: 15px;'>
+                        <div class="row">
+                            <div class='col' style='text-align: left;min-width: 270px; max-width: 340px;'>
+                                <img src='{{ offer.photo.url }}' alt="image"  style='max-width: 100%; min-width: none; border-radius: 10px;' />
+                            </div>
+                            <div class='col' style='text-align: left; min-width: 250px;margin-top: 5px; margin-bottom: 0px;'>
+                                <h4 style="color: #2a9d8f;">{{ offer.name }}</h4>
+                                <br>
+                                <div name="icons_gread" style="max-width: 200px;">
+                                    <div class="row">
+                                        <div class="col" style="margin-top: 7px;"><img src='{% static "transport/icons/icon_man.svg" %}' style='width: 17px; vertical-align: -10%; margin-right: 5px;' />{{ offer.passenger_places }}</div>
+                                        <div class="col" style="margin-top: 7px;"><img src='{% static "transport/icons/icon_conditioner.svg" %}' style='width: 17px; vertical-align: -15%; margin-right: 5px;' />A/C {{ offer.air_conditioner }}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col" style="margin-top: 7px;"><img src='{% static "transport/icons/icon_bagage.svg" %}' style='width: 17px; vertical-align: -10%; margin-right: 5px;' />{{ offer.baggage_places }}</div>
+                                        <div class="col" style="margin-top: 7px;"><img src='{% static "transport/icons/icon_gearbox.svg" %}' style='width: 17px; vertical-align: -10%; margin-right: 5px;' />{{ offer.automat_gearbox }}</div>
+                                    </div>
+                                </div>
+                                <br><br>
+                                <div><b>Description: </b>{{ offer.description }}</div>
+                            </div>
+                            <div class="col">
+                                <br><br>
+                                <div style='text-align: left; height: 100%; margin-top: 15px;'>
+                                    <div class='row'>
+                                        <div class="col" style="margin-top: 7px;"><a href="#" class="btn btn-link" style="color: black; padding: 0%; font-weight: 800;">{{ offer.owner.username }}</a></div>
+                                        <div class="col" style="margin-top: 7px; font-size: 17px;"><img src='{% static "transport/icons/icon_star.svg" %}' style='width: 18px; vertical-align: -11%; margin-right: 5px;' />{{ owner_rating }}/<span style="font-size: 11.5px;">5</span> <a href="#" class="btn btn-link" style="font-size: 15px; color: black; padding: 0%; padding-bottom: 3px; text-decoration: underline;">{{ responses_count }} reviews</a></div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class="col" style="margin-top: 6px;"><img src='{% static "transport/icons/icon_location.svg" %}' style='width: 14px; vertical-align: -15%; margin-right: 5px;' />{{ offer.pick_up_location }}</div>
+                                    </div>
+                                    <br><br>
+                                    <div><b>Could not be reserved in:</b>
+                                        {% for start_date, close_date in reserved_dates %}
+                                            {{ start_date }} - {{ close_date }}, 
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row " style="padding-top: 40px; margin:0px;">
+        
+        <div class="col" style="width:100%">
+            <h3 style="font-weight: 700; text-align: left; margin-left: 20%; margin-bottom: 15px; margin-top: 0px;">Order details</h3>
+            <div id="order_form">
+                <form method="GET">
+                    <div class="card mb-2 rounded-6 shadow p-2" style='min-height: 300px; min-width: 300px; max-width: 1000px; border-radius: 15px; margin-left: auto; margin-right: auto;'>
+                        <div class="card-body" style='padding: 15px;'>
+                            <div class="row">
+                                <div class='col' style='text-align: left;min-width: 270px;'>
+                                    <div style="margin: 15px;"><label for="Username" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Your Username</b></label><input style="width: 80%; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; padding-left: 4%; text-align: left; min-width: 270px;" type="text" name="username" placeholder="Username" value='{{ user.username }}'></div>
+                                    <div style="margin: 15px;"><label for="Username" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Your Emal</b></label><input style="width: 80%; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; padding-left: 4%; text-align: left; min-width: 270px;" type="text" name="email"  placeholder="Email" value='{{ user.email }}'></div>
+                                    <div style="margin: 15px;"><label for="Username" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Your Phone</b></label><input style="width: 80%; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; padding-left: 4%; text-align: left; min-width: 270px;" type="text" name="phone"  placeholder="Phone" value='{{ user.phone }}'></div>
+                                    <div style="margin: 15px;"><label for="Username" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Deliver to</b></label><input style="width: 80%; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; padding-left: 4%; text-align: left; min-width: 270px;" type="text" name="deliver_to" placeholder="Strit, City, State, Country" value=''></div>
+                                    <div class="row" style="max-width: 100%;">
+                                        <div class="col" style="min-width: 140px; max-width: 42.5%;"><div style="margin: 15px; margin-right: 0%; padding: 0%;"><label for="start_date" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Pick-up</b></label><input style="max-width: 160px; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; text-align: center;" type="date" name="start_date" id="start_date"></div></div>
+                                        <div class="col" style="min-width: 140px; max-width: 42.5%;"><div style="margin: 15px; margin-left: 13%;"><label for="end_date" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Drop-off</b></label><input style="max-width: 160px; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; text-align: center;" type="date" name="end_date" id="end_date"></div></div>
+                                    </div>  
+                                </div>
+                                <div class='col' style='text-align: left; margin-top: 5px; margin-bottom: 0px;'>
+                                    <p style="font-weight: 700; text-align: left; font-size: larger; margin-bottom: 2%; margin-top: 5%;"><b>Additionals:</b></p>
+                                    <ul class="list-group" style="padding-left: 20px; ">
+                                        {% for add in adds %}
+                                            <li class="list-group-item" style="border: none; padding: 1%; color: #2a9d8f; font-weight: 600;">
+                                                <input name='add_{{ add.pk }}' class="form-check-input me-1"  type="checkbox" style="zoom: 1.15;" value="{{ add.pk }}" aria-label="...">
+                                                {{ add.add_name }} (${{ add.add_price }})
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+
+                                    <div style="margin-top: 40px; text-align: left;">
+                                        <div class="row">
+                                            <div class="col"><br><div class="col" style='margin-top: 8%;'><img src='{% static "transport/icons/check.png" %}' style='width: 20px; vertical-align: -10%; margin-right: 5px;' />Free canelation</div> </div>
+                                            <div class="col">
+                                                Total:
+                                                <p><b style="font-size: 30px; color: #2a9d8f">$0</b>/for 0 day(s)</p>
+                                                
+                                            </div>                                   
+                                        </div>
+                                    <a href="/details/{{ offer.pk }}"><button type="button" class="btn btn-warning" style='width: 100%; color: white;'><b>BOOK NOW</b></button></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script src="{% static 'transport/search.js' %}" type="text/babel"></script>
+{% endblock %}

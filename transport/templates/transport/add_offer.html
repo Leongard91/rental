@@ -6,12 +6,12 @@
 {% block body %}
 
     <div class='mb-3'>
-        <h2 style='color: #2798F8; margin-bottom: 60px; margin-top: 60px; text-align: center;' >New Transport:</h2>
+        <h2 style='margin-bottom: 30px; margin-top: 60px; text-align: center;' >New Transport:</h2>
 
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form }}
-            <input type="submit" class='btn btn-primary' value="Add">
+            <input type="submit" class='btn btn-warning' value="Add">
         </form>
     </div>
     

@@ -18,7 +18,9 @@ $(document).ready(
         }
     }),
 
+    // Place by order
     $('#order').change(event => {
+        $('#new_search').hide();
         load(event.target.value);
     })
 )

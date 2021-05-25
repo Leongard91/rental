@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, response
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
@@ -38,13 +38,15 @@ def search(f):
                 return render(request, 'transport/search.html', instance)
 
             if start_date < date.today() or end_date < date.today() or start_date >= end_date:
-                instance['error'] = "You can't rent transport to the past!"
+                instance['error'] = "You can't rent transport in the past!"
                 return render(request, 'transport/search.html', instance)
 
+            # How many days transport will be rented
             time_delta = end_date - start_date
             instance['time_delta'] = time_delta.days
             request.session['time_delta'] = time_delta.days
 
+            # !!!!CEnge for filtering
             # Price range
             max_price = Transport.objects.aggregate(Max('price_per_day'))['price_per_day__max']
             min_price = Transport.objects.aggregate(Min('price_per_day'))['price_per_day__min']
@@ -65,7 +67,15 @@ def search(f):
                     if deal.rent_transport in filtered_transports:
                         filtered_transports.remove(deal.rent_transport)
             
-            offers = [((transport.price_per_day * time_delta.days), transport) for transport in filtered_transports]
+
+            #offers = [((transport.price_per_day * time_delta.days), transport) for transport in filtered_transports]
+            offers = []
+            for transport in filtered_transports:
+                total_price = transport.price_per_day * time_delta.days
+                ratings =[response.rating for response in transport.owner.received_responses.all()]
+                responses_count = len(ratings)
+                owner_rating = round((sum(ratings) / len(ratings)), 1)
+                offers.append((owner_rating, responses_count,  total_price, transport))
 
             # Save result in global variable for filters
             global local_transport
@@ -176,11 +186,16 @@ def add_offer(request):
             except: 
                     instance['error'] = 'Category and Type need to be entered.'
                     return render(request, 'transport/add_offer.html', instance)
+            passenger_places = form.cleaned_data['passenger_places']
+            baggage_places = form.cleaned_data['baggage_places']
+            air_conditioner = form.cleaned_data['air_conditioner']
+            automat_gearbox = form.cleaned_data['automat_gearbox']
             pick_up_location = form.cleaned_data['pick_up_location'].upper()
             price_per_day = form.cleaned_data['price_per_day']
             owner = request.user
             photo = request.FILES['photo']
-            new_tr = Transport(name=name, description=description, category=category, type=type, pick_up_location=pick_up_location, price_per_day=price_per_day, owner=owner, photo=photo)
+            new_tr = Transport(name=name, description=description, category=category, type=type, pick_up_location=pick_up_location, \
+                price_per_day=price_per_day, owner=owner, passenger_places=passenger_places, baggage_places=baggage_places, air_conditioner=air_conditioner, automat_gearbox=automat_gearbox, photo=photo)
             new_tr.save()
             instance['message'] = 'SUCCESS'
             return render(request, 'transport/add_offer.html', instance)
@@ -188,13 +203,6 @@ def add_offer(request):
         return render(request, 'transport/add_offer.html', instance)
     instance['form'] = NewTransportForm()
     return render(request, 'transport/add_offer.html', instance)
-
-#!!!!!!!!!!rebuild
-def offer_view(request, offer_id):
-    instance = {}
-    offer = Transport.objects.get(pk=offer_id)
-    instance['offer'] = offer
-    return render(request, 'transport/offer_page.html', instance)
 
 # delete in the end
 @search
@@ -216,18 +224,19 @@ def offer_filter(request):
         order_reverse = (order[1] == 'True')
     except: pass
 
+    # Filtering prosess
     filters = request.GET['filters'].split(',')
     if not request.GET['filters']:
         filters = [category.category_name for category in Category.objects.all()] + [type.type_name for type in Type.objects.all()]
     filtered_transport = []
     local_transport_for_filtering = local_transport[request.user.pk]
-    for total_price, transport in local_transport_for_filtering:
+    for owner_rating, responses_count, total_price, transport in local_transport_for_filtering:
         if (transport.category.category_name in filters) or (transport.type.type_name in filters):
-            filtered_transport.append((total_price, transport))
+            filtered_transport.append((owner_rating, responses_count, total_price, transport))
 
     # Construct data for response
     data_unsorted = []
-    for total_price, offer in filtered_transport:
+    for owner_rating, responses_count, total_price, offer in filtered_transport:
         timestamp = offer.timestamp
         timestamp = timestamp.strftime('%b %d, %Y, %#I:%M %p')
         offer_data = {
@@ -239,7 +248,9 @@ def offer_filter(request):
             'pick_up_location': offer.pick_up_location,
             'timestamp': timestamp,
             'time_delta': request.session['time_delta'],
-            'total_price': total_price
+            'total_price': total_price, 
+            'owner_rating': owner_rating,
+            'responses_count': responses_count
         }
         data_unsorted.append(offer_data)
     try:
@@ -250,3 +261,26 @@ def offer_filter(request):
         'offers' : data
     })
     
+def details_view(request, transport_id):
+    instance = {}
+    offer = Transport.objects.get(pk=transport_id)
+    instance['offer'] = offer
+
+    # Find already reserved dates
+    reserved_dates = [(deal.start_date, deal.close_date) for deal in offer.deals.all()]
+    instance['reserved_dates'] = reserved_dates
+
+    # Add aditionals
+    adds = Additional.objects.all()
+    instance['adds'] = adds
+
+    # Get owner rating
+    ratings =[response.rating for response in offer.owner.received_responses.all()]
+    responses_count = len(ratings)
+    owner_rating = round((sum(ratings) / len(ratings)), 1)
+    instance['responses_count'] = responses_count
+    instance['owner_rating'] = owner_rating
+
+    return render(request, 'transport/details.html', instance)
+
+
