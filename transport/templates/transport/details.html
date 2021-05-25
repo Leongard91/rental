@@ -62,18 +62,19 @@
         <div class="col" style="width:100%">
             <h3 style="font-weight: 700; text-align: left; margin-left: 20%; margin-bottom: 15px; margin-top: 0px;">Order details</h3>
             <div id="order_form">
-                <form method="GET">
+                <form method="POST">
+                    {% csrf_token %}
                     <div class="card mb-2 rounded-6 shadow p-2" style='min-height: 300px; min-width: 300px; max-width: 1000px; border-radius: 15px; margin-left: auto; margin-right: auto;'>
                         <div class="card-body" style='padding: 15px;'>
                             <div class="row">
                                 <div class='col' style='text-align: left;min-width: 270px;'>
-                                    <div style="margin: 15px;"><label for="Username" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Your Username</b></label><input style="width: 80%; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; padding-left: 4%; text-align: left; min-width: 270px;" type="text" name="username" placeholder="Username" value='{{ user.username }}'></div>
-                                    <div style="margin: 15px;"><label for="Username" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Your Emal</b></label><input style="width: 80%; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; padding-left: 4%; text-align: left; min-width: 270px;" type="text" name="email"  placeholder="Email" value='{{ user.email }}'></div>
-                                    <div style="margin: 15px;"><label for="Username" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Your Phone</b></label><input style="width: 80%; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; padding-left: 4%; text-align: left; min-width: 270px;" type="text" name="phone"  placeholder="Phone" value='{{ user.phone }}'></div>
-                                    <div style="margin: 15px;"><label for="Username" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Deliver to</b></label><input style="width: 80%; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; padding-left: 4%; text-align: left; min-width: 270px;" type="text" name="deliver_to" placeholder="Strit, City, State, Country" value=''></div>
+                                    <div style="margin: 15px;"><label for="Username" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Your Username</b></label><input style="width: 80%; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; padding-left: 4%; text-align: left; min-width: 270px;" type="text" name="username" placeholder="Username" value='{{ user.username }}' disabled></div>
+                                    <div style="margin: 15px;"><label for="Username" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Your Emal</b></label><input style="width: 80%; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; padding-left: 4%; text-align: left; min-width: 270px;" type="text" name="email"  placeholder="Email" value='{{ user.email }}' disabled></div>
+                                    <div style="margin: 15px;"><label for="Username" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Your Phone</b></label><input style="width: 80%; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; padding-left: 4%; text-align: left; min-width: 270px;" type="text" name="phone"  placeholder="Phone" value='{{ user.phone }}' disabled></div>
+                                    <div style="margin: 15px;"><label for="Username" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Deliver to</b></label><input style="width: 80%; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; padding-left: 4%; text-align: left; min-width: 270px;" type="text" name="deliver_to" id="deliver_to" placeholder='Choose "Deliver to address" to activate' disabled></div>
                                     <div class="row" style="max-width: 100%;">
-                                        <div class="col" style="min-width: 140px; max-width: 42.5%;"><div style="margin: 15px; margin-right: 0%; padding: 0%;"><label for="start_date" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Pick-up</b></label><input style="max-width: 160px; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; text-align: center;" type="date" name="start_date" id="start_date"></div></div>
-                                        <div class="col" style="min-width: 140px; max-width: 42.5%;"><div style="margin: 15px; margin-left: 13%;"><label for="end_date" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Drop-off</b></label><input style="max-width: 160px; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; text-align: center;" type="date" name="end_date" id="end_date"></div></div>
+                                        <div class="col" style="min-width: 140px; max-width: 42.5%;"><div style="margin: 15px; margin-right: 0%; padding: 0%;"><label for="details_start_date" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Pick-up</b></label><input style="max-width: 160px; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; text-align: center;" type="date" name="details_start_date" id="details_start_date"></div></div>
+                                        <div class="col" style="min-width: 140px; max-width: 42.5%;"><div style="margin: 15px; margin-left: 13%;"><label for="details_end_date" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Drop-off</b></label><input style="max-width: 160px; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; text-align: center;" type="date" name="details_end_date" id="details_end_date"></div></div>
                                     </div>  
                                 </div>
                                 <div class='col' style='text-align: left; margin-top: 5px; margin-bottom: 0px;'>
@@ -81,7 +82,7 @@
                                     <ul class="list-group" style="padding-left: 20px; ">
                                         {% for add in adds %}
                                             <li class="list-group-item" style="border: none; padding: 1%; color: #2a9d8f; font-weight: 600;">
-                                                <input name='add_{{ add.pk }}' class="form-check-input me-1"  type="checkbox" style="zoom: 1.15;" value="{{ add.pk }}" aria-label="...">
+                                                <input name='add_{{ add.pk }}' class="form-check-input me-1"  type="checkbox" style="zoom: 1.15;" value="{{ add.add_price }}" aria-label="...">
                                                 {{ add.add_name }} (${{ add.add_price }})
                                             </li>
                                         {% endfor %}
@@ -92,11 +93,11 @@
                                             <div class="col"><br><div class="col" style='margin-top: 8%;'><img src='{% static "transport/icons/check.png" %}' style='width: 20px; vertical-align: -10%; margin-right: 5px;' />Free canelation</div> </div>
                                             <div class="col">
                                                 Total:
-                                                <p><b style="font-size: 30px; color: #2a9d8f">$0</b>/for 0 day(s)</p>
+                                                <p><b style="font-size: 30px; color: #2a9d8f">$<span id='estimated_amount' data-price_per_day="{{ offer.price_per_day }}">0</span></b> / for <span id="estimated_days">0</span> day(s)</p>
                                                 
                                             </div>                                   
                                         </div>
-                                    <a href="/details/{{ offer.pk }}"><button type="button" class="btn btn-warning" style='width: 100%; color: white;'><b>BOOK NOW</b></button></a>
+                                    <input type="submit" class="btn btn-warning" style='width: 100%; color: white; font-weight: 700;' value="BOOK NOW">
                                 </div>
                             </div>
                         </div>
@@ -108,5 +109,5 @@
 
     
 
-    <script src="{% static 'transport/search.js' %}" type="text/babel"></script>
+    <script src="{% static 'transport/details.js' %}" type="text/babel"></script>
 {% endblock %}

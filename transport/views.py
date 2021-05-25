@@ -266,6 +266,16 @@ def details_view(request, transport_id):
     offer = Transport.objects.get(pk=transport_id)
     instance['offer'] = offer
 
+    if request.method == 'POST':
+        rent_transport = offer
+        owner = offer.owner
+        client = request.user
+        #start_date
+        #close_date
+        #additionals
+        #total_price
+        #pay_method
+
     # Find already reserved dates
     reserved_dates = [(deal.start_date, deal.close_date) for deal in offer.deals.all()]
     instance['reserved_dates'] = reserved_dates
