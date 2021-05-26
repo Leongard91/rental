@@ -10,5 +10,6 @@ urlpatterns = [
     path('add_offer', views.add_offer, name='add_offer'), 
     path('search', views.search_view, name='search'), # delete in the end
     path('filter', views.offer_filter, name='filter'),
-    path('details/<int:transport_id>', views.details_view, name='details')
+    path('details/<int:transport_id>', views.details_view, name='details'),
+    path('user/<int:id>', views.user_view, name='user_page')
 ]

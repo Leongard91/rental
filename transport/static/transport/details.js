@@ -4,11 +4,11 @@ var price_per_day = parseInt($('#estimated_amount').data('price_per_day'));
 var start_date;
 var end_date;
 
-
-
 $(document).ready(
     
     $(document).click(event => {
+
+        // Update total with choosen adds
         if (event.target.type === "checkbox") {
             currrent_amount = parseInt($('#estimated_amount').text(), 10);
              // Add adds to the list
@@ -24,6 +24,7 @@ $(document).ready(
             $('#estimated_amount').text(currrent_amount);
         }
 
+        // Update total with choosen dates
         if (event.target.type === 'date') {
             if (event.target.name === 'details_start_date') {
                 $('#details_start_date').change(ev => {
@@ -45,18 +46,26 @@ $(document).ready(
                         var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                         $('#estimated_amount').text(currrent_amount + price_per_day * diffDays); 
                         $('#estimated_days').text(diffDays);
-                    }
-                    
+                        
+                        // Update value of hidden total input
+                        $('#total').prop("value", (currrent_amount + price_per_day * diffDays))
+                    }    
                 })
-            }
-            
+            }  
         }
 
-        if (adds.includes('add_2')) {
+        // Turn on-off deliver_to and pick_up_from fields
+        if (adds.includes('#add_2')) {
             $('#deliver_to').prop('disabled', false)
         } else {
             $('#deliver_to').prop('disabled', true),
             $('#deliver_to').prop('value', '')
+        }
+        if (adds.includes('#add_3')) {
+            $('#pick_up_from').prop('disabled', false)
+        } else {
+            $('#pick_up_from').prop('disabled', true),
+            $('#pick_up_from').prop('value', '')
         }
 
     })

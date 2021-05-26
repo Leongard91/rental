@@ -1,7 +1,7 @@
 {% extends 'transport/layout.html' %}
 {% load static %}
 
-{% block title %}New Transport{% endblock %}
+{% block title %}Details{% endblock %}
 
 {% block body %}
     <div class="row " style="padding-top: 40px; margin:0px;">
@@ -34,8 +34,8 @@
                                 <br><br>
                                 <div style='text-align: left; height: 100%; margin-top: 15px;'>
                                     <div class='row'>
-                                        <div class="col" style="margin-top: 7px;"><a href="#" class="btn btn-link" style="color: black; padding: 0%; font-weight: 800;">{{ offer.owner.username }}</a></div>
-                                        <div class="col" style="margin-top: 7px; font-size: 17px;"><img src='{% static "transport/icons/icon_star.svg" %}' style='width: 18px; vertical-align: -11%; margin-right: 5px;' />{{ owner_rating }}/<span style="font-size: 11.5px;">5</span> <a href="#" class="btn btn-link" style="font-size: 15px; color: black; padding: 0%; padding-bottom: 3px; text-decoration: underline;">{{ responses_count }} reviews</a></div>
+                                        <div class="col" style="margin-top: 7px;"><a href="/user/{{ offer.owner.pk }}" class="btn btn-link" style="color: black; padding: 0%; font-weight: 800;">{{ offer.owner.username }}</a></div>
+                                        <div class="col" style="margin-top: 7px; font-size: 17px;"><img src='{% static "transport/icons/icon_star.svg" %}' style='width: 18px; vertical-align: -11%; margin-right: 5px;' />{{ owner_rating }}/<span style="font-size: 11.5px;">5</span> <a href="/user/{{ offer.owner.pk }}" class="btn btn-link" style="font-size: 15px; color: black; padding: 0%; padding-bottom: 3px; text-decoration: underline;">{{ responses_count }} reviews</a></div>
                                     </div>
                                     <div class='row'>
                                         <div class="col" style="margin-top: 6px;"><img src='{% static "transport/icons/icon_location.svg" %}' style='width: 14px; vertical-align: -15%; margin-right: 5px;' />{{ offer.pick_up_location }}</div>
@@ -68,10 +68,11 @@
                         <div class="card-body" style='padding: 15px;'>
                             <div class="row">
                                 <div class='col' style='text-align: left;min-width: 270px;'>
-                                    <div style="margin: 15px;"><label for="Username" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Your Username</b></label><input style="width: 80%; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; padding-left: 4%; text-align: left; min-width: 270px;" type="text" name="username" placeholder="Username" value='{{ user.username }}' disabled></div>
-                                    <div style="margin: 15px;"><label for="Username" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Your Emal</b></label><input style="width: 80%; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; padding-left: 4%; text-align: left; min-width: 270px;" type="text" name="email"  placeholder="Email" value='{{ user.email }}' disabled></div>
-                                    <div style="margin: 15px;"><label for="Username" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Your Phone</b></label><input style="width: 80%; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; padding-left: 4%; text-align: left; min-width: 270px;" type="text" name="phone"  placeholder="Phone" value='{{ user.phone }}' disabled></div>
-                                    <div style="margin: 15px;"><label for="Username" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Deliver to</b></label><input style="width: 80%; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; padding-left: 4%; text-align: left; min-width: 270px;" type="text" name="deliver_to" id="deliver_to" placeholder='Choose "Deliver to address" to activate' disabled></div>
+                                    <div style="margin: 15px;"><label for="username" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Your Username</b></label><input style="width: 80%; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; padding-left: 4%; text-align: left; min-width: 270px;" type="text" name="username" placeholder="Username" value='{{ user.username }}' disabled></div>
+                                    <div style="margin: 15px;"><label for="email" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Your Emal</b></label><input style="width: 80%; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; padding-left: 4%; text-align: left; min-width: 270px;" type="text" name="email"  placeholder="Email" value='{{ user.email }}' disabled></div>
+                                    <div style="margin: 15px;"><label for="phone" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Your Phone</b></label><input style="width: 80%; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; padding-left: 4%; text-align: left; min-width: 270px;" type="text" name="phone"  placeholder="Phone" value='{{ user.phone }}' disabled></div>
+                                    <div style="margin: 15px;"><label for="deliver_to" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Deliver to</b></label><input style="width: 80%; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; padding-left: 4%; text-align: left; min-width: 270px;" type="text" name="deliver_to" id="deliver_to" placeholder='Choose "Deliver to address" to activate' disabled></div>
+                                    <div style="margin: 15px;"><label for="pick_up_from" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Deliver to</b></label><input style="width: 80%; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; padding-left: 4%; text-align: left; min-width: 270px;" type="text" name="pick_up_from" id="pick_up_from" placeholder='Choose "Pick-up from address" to activate' disabled></div>
                                     <div class="row" style="max-width: 100%;">
                                         <div class="col" style="min-width: 140px; max-width: 42.5%;"><div style="margin: 15px; margin-right: 0%; padding: 0%;"><label for="details_start_date" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Pick-up</b></label><input style="max-width: 160px; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; text-align: center;" type="date" name="details_start_date" id="details_start_date"></div></div>
                                         <div class="col" style="min-width: 140px; max-width: 42.5%;"><div style="margin: 15px; margin-left: 13%;"><label for="details_end_date" style="width: 100%; margin: 0px; font-size: 13px; padding-left: 2%; color:#2a9d8f; text-align: left;"><b>Drop-off</b></label><input style="max-width: 160px; background-color: #E9F5F4; border: 1px solid #2a9d8f; border-radius: 5px; padding: 5px; text-align: center;" type="date" name="details_end_date" id="details_end_date"></div></div>
@@ -82,19 +83,29 @@
                                     <ul class="list-group" style="padding-left: 20px; ">
                                         {% for add in adds %}
                                             <li class="list-group-item" style="border: none; padding: 1%; color: #2a9d8f; font-weight: 600;">
-                                                <input name='add_{{ add.pk }}' class="form-check-input me-1"  type="checkbox" style="zoom: 1.15;" value="{{ add.add_price }}" aria-label="...">
+                                                <input id='add_{{ add.pk }}' name="add_{{ add.pk }}" class="form-check-input me-1"  type="checkbox" style="zoom: 1.15;" value="{{ add.add_price }}" aria-label="...">
                                                 {{ add.add_name }} (${{ add.add_price }})
                                             </li>
                                         {% endfor %}
                                     </ul>
 
-                                    <div style="margin-top: 40px; text-align: left;">
+                                    <div style="margin-top: 25%; text-align: left;">
                                         <div class="row">
-                                            <div class="col"><br><div class="col" style='margin-top: 8%;'><img src='{% static "transport/icons/check.png" %}' style='width: 20px; vertical-align: -10%; margin-right: 5px;' />Free canelation</div> </div>
                                             <div class="col">
-                                                Total:
+                                                <div class="col" style='margin-top: 2.5%; margin-bottom: 5%;'><img src='{% static "transport/icons/check.png" %}' style='width: 20px; vertical-align: -10%; margin-right: 5px;' />Free canelation</div> 
+                                                <div>
+                                                    <select class="form-select" name="pay_method" id="pay_method" style="border-radius: 8px; border-color: #2a9d8f; padding: 1px; padding-left: 5px; padding-right: 4px;">
+                                                        <option selected value='' disabled>Select payment method</option>
+                                                        {% for pay_method in pay_methods %}
+                                                            <option value="{{ pay_method.pk }}">{{ pay_method.pay_method_name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col">  
+                                                <b style="font-weight: 700; text-align: left; font-size: larger;">Total:</b> 
                                                 <p><b style="font-size: 30px; color: #2a9d8f">$<span id='estimated_amount' data-price_per_day="{{ offer.price_per_day }}">0</span></b> / for <span id="estimated_days">0</span> day(s)</p>
-                                                
+                                                <input type="hidden" name="total" id="total" value='0'>
                                             </div>                                   
                                         </div>
                                     <input type="submit" class="btn btn-warning" style='width: 100%; color: white; font-weight: 700;' value="BOOK NOW">

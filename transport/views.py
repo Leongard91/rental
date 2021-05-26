@@ -90,6 +90,7 @@ def search(f):
 def index(request):
     return render(request, 'transport/index.html')
 
+@search
 def login_view(request):
     instance = {}
     if request.method == "POST":
@@ -110,10 +111,12 @@ def login_view(request):
     instance['form'] = LoginForm()
     return render(request, "transport/login.html", instance)
 
+@search
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
 
+@search
 def register(request):
     instance = {}
     if request.method == 'POST':
@@ -122,13 +125,14 @@ def register(request):
         confirmarion = request.POST['confirmation']
         email = request.POST['email']
         phone = request.POST['phone']
-
+        adress = request.POST.get('adress', False)
+        about = request.POST.get('about', False)
         if password != confirmarion:
             instance['error'] = "Passwords must match."
             return render(request, 'transport/login.html', instance)
 
         try:
-            user = User.objects.create_user(username, email, password, phone=phone)
+            user = User.objects.create_user(username, email, password, phone=phone, adress=adress, about=about)
             #user.save()
         except IntegrityError:
             instance['error'] = "User already exists."
@@ -141,6 +145,7 @@ def register(request):
     return render(request, 'transport/register.html', instance)
 
 #!!!!!  add order
+@search
 def get_offers(request):
 
     # Get start and end points
@@ -171,6 +176,7 @@ def get_offers(request):
         'offers': data
     }, status=200)
 
+@search
 @login_required(login_url='login')
 def add_offer(request):
     instance = {}
@@ -214,6 +220,7 @@ def search_view(request):
     instance['types'] = types
     return render(request, 'transport/search.html', instance)
 
+@search
 def offer_filter(request):
     global local_transport
 
@@ -234,6 +241,11 @@ def offer_filter(request):
         if (transport.category.category_name in filters) or (transport.type.type_name in filters):
             filtered_transport.append((owner_rating, responses_count, total_price, transport))
 
+    # Get max-min price from filtered_transport
+    filtered_transport_prices = [total_price for owner_rating, responses_count, total_price, transport in filtered_transport]
+    filtered_max_price = max(filtered_transport_prices)
+    filtered_min_price = min(filtered_transport_prices)
+
     # Construct data for response
     data_unsorted = []
     for owner_rating, responses_count, total_price, offer in filtered_transport:
@@ -250,39 +262,46 @@ def offer_filter(request):
             'time_delta': request.session['time_delta'],
             'total_price': total_price, 
             'owner_rating': owner_rating,
-            'responses_count': responses_count
+            'responses_count': responses_count,
+            'passenger_places': offer.passenger_places,
+            'air_conditioner': offer.air_conditioner,
+            'baggage_places': offer.baggage_places,
+            'automat_gearbox': offer.automat_gearbox,
+            'owner': offer.owner.username,
+            'details': f'/details/{offer.pk}',
+            'owner_page': f'/user/{offer.owner.pk}'
         }
         data_unsorted.append(offer_data)
     try:
         data = sorted(data_unsorted, key=lambda k: k[order_by], reverse=order_reverse)
     except: data = data_unsorted
-    time.sleep(1)
+    time.sleep(0.5)
     return JsonResponse({
-        'offers' : data
+        'offers' : data,
+        'max_price': filtered_max_price,
+        'min_price': filtered_min_price
     })
-    
+
+@search    
 def details_view(request, transport_id):
     instance = {}
     offer = Transport.objects.get(pk=transport_id)
     instance['offer'] = offer
 
-    if request.method == 'POST':
-        rent_transport = offer
-        owner = offer.owner
-        client = request.user
-        #start_date
-        #close_date
-        #additionals
-        #total_price
-        #pay_method
-
     # Find already reserved dates
     reserved_dates = [(deal.start_date, deal.close_date) for deal in offer.deals.all()]
+    for start_date, close_date in reserved_dates:
+        if close_date < date.today():
+            reserved_dates.remove((start_date, close_date))
     instance['reserved_dates'] = reserved_dates
 
     # Add aditionals
     adds = Additional.objects.all()
     instance['adds'] = adds
+
+    # Add pay_methods
+    pay_methods = Pay_method.objects.all()
+    instance['pay_methods'] = pay_methods
 
     # Get owner rating
     ratings =[response.rating for response in offer.owner.received_responses.all()]
@@ -291,6 +310,62 @@ def details_view(request, transport_id):
     instance['responses_count'] = responses_count
     instance['owner_rating'] = owner_rating
 
+    # Creating Deal
+    if request.method == 'POST':
+        rent_transport = offer
+        owner = offer.owner
+        client = request.user
+        deliver_to = request.POST.get('deliver_to', False)
+        pick_up_from = request.POST.get('pick_up_from', False)
+        total_price = request.POST['total']
+
+        if not request.POST.get('pay_method', False):
+            instance['error'] = 'Pay method needs to be choosen.'
+            return render(request, 'transport/details.html', instance)
+        pay_method = Pay_method.objects.get(pk=request.POST["pay_method"])
+
+        try:
+            start_date = date.fromisoformat(request.POST['details_start_date'])
+            close_date = date.fromisoformat(request.POST['details_end_date'])
+        except: 
+            instance['error'] = '"Pick-up" date and "Drop-off" date need to be entered.'
+            return render(request, 'transport/details.html', instance)
+        
+        # Get aditionals from post
+        additionals = []
+        for add in adds:
+            if request.POST.get(f'add_{add.pk}', False):
+                additionals.append(add.pk)
+
+        # Insert data to the Deal table
+        try:
+            Deal.objects.create(rent_transport=rent_transport, owner=owner, client=client, start_date=start_date, close_date=close_date, \
+                deliver_to=deliver_to, pick_up_from=pick_up_from, total_price=total_price, pay_method=pay_method)
+        except:
+            instance['error'] = "Insert error"
+            return render(request, 'transport/details.html', instance)
+
+        # If success
+        instance['transport'] = offer
+        return render(request, 'transport/success.html', instance)
     return render(request, 'transport/details.html', instance)
 
+def user_view(request, id):
+    instance = {}
+    user_page_info = User.objects.get(pk=id)
+    instance['user_page_info'] = user_page_info
 
+    # Get owner rating
+    ratings =[response.rating for response in user_page_info.received_responses.all()]
+    responses_count = len(ratings)
+    owner_rating = round((sum(ratings) / len(ratings)), 1)
+    instance['responses_count'] = responses_count
+    instance['owner_rating'] = owner_rating
+
+    offers = Transport.objects.filter(owner=user_page_info)
+    instance['offers'] = offers
+
+    reviews = Response.objects.filter(on_user=user_page_info).order_by("-timestamp")
+    instance['reviews'] = reviews
+    
+    return render(request, 'transport/user_page.html', instance)

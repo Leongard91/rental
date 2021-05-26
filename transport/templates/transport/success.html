@@ -1,0 +1,18 @@
+{% extends 'transport/layout.html' %}
+{% load static %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <div class="mb-3">
+        <br>
+        <h2>SUCCESS!</h2>
+        <br>
+        <h4>Transpot owner contact width You in 15 minets.</h4>
+        <br>
+        <h4>Please wait for the owner's call...</h4>
+        <br>
+        <a href="/details/{{ transport.pk }}"><< Back to transport details</a>
+    </div>
+
+{% endblock %}

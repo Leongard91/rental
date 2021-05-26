@@ -1,0 +1,100 @@
+{% extends 'transport/layout.html' %}
+{% load static %}
+
+{% block title %}User{% endblock %}
+
+{% block body %}
+    <div class="row " style="padding-top: 40px; margin:0px;">
+        <div class="col" style="margin-left: 5%; max-width: 300px;">
+            <br>
+            <div class="card mb-2 rounded-6 shadow p-2" style="border-radius: 15px; margin-top: 8%;">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <img src='{% static "transport/icons/user.png" %}' alt="user_image"  style='max-width: 100%; min-width: none;' />
+                        </div>
+                        <div class='col'>
+                            <div style="color: #2a9d8f; font-weight: 700; font-size:x-large">{{ user_page_info.username }}</div>
+                            <div>Rating: {{ owner_rating }}/<span style="font-size: 11.5px;">5</span> <a href="/user/{{ user_page_info.pk }}" class="btn btn-link" style="font-size: 15px; color: black; padding: 0%; padding-bottom: 3px; text-decoration: underline;">{{ responses_count }} reviews</a></div>
+                        </div>
+                    </div>
+
+                    <p style="margin-top: 15%; margin-bottom: 2%;"><b>Lives in: </b> <span>{{user_page_info.adress}}</span></p>
+                    <b>Joined in: </b> <span>{{user_page_info.datestamp}}</span>
+                    <p style="margin-top: 15%; margin-bottom: 2%;"><b>About</b></p>
+                    <div>{{ user_page_info.about }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col" style="width:100%">
+            <h5 style="font-weight: 700; text-align: left; margin-left: 4%; margin-bottom: 8px; margin-top: 0px;">{{ user_page_info.username }}'s listings:</h5>
+            <div class="row row-cols-1 row-cols-md-2 mb-2 text-center">
+
+                {% for offer in offers %}
+                        <div class="card mb-2 rounded-6 shadow p-2" style='min-height: 300px; min-width: 300px; max-width: 475px; border-radius: 15px;padding-right: 0%; margin: 1.3%;'>
+                            <div class="card-body" style='padding: 15px; '>
+                                <div class="row">
+                                    <div class='col' style='text-align: left;min-width: 270px; max-width: 150px;'>
+                                        <img src='{{ offer.photo.url }}' alt="image"  style='max-width: 100%; min-width: none; border-radius: 10px;' />
+                                        <a href="/details/{{ offer.pk }}" ><button type="button" class="btn btn-warning" style='width: 100%; color: white; margin-top: 6%;'><b>DETAILS</b></button></a>
+                                    </div>
+                                    <div class='col' style='text-align: left; min-width: 150px;margin-top: 5px; margin-bottom: 0px;'>
+                                        <h4 style="color: #2a9d8f;">{{ offer.name }}</h4>
+                                        <br>
+                                        <div name="icons_gread" style="max-width: 200px;">
+                                            <div class="row">
+                                                <div class="col" style="margin-top: 7px; max-width: 70px;"><img src='{% static "transport/icons/icon_man.svg" %}' style='width: 17px; vertical-align: -10%; margin-right: 5px;' />{{ offer.passenger_places }}</div>
+                                                <div class="col" style="margin-top: 7px;"><img src='{% static "transport/icons/icon_conditioner.svg" %}' style='width: 17px; vertical-align: -15%; margin-right: 5px;' />A/C {{ offer.air_conditioner }}</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col" style="margin-top: 7px; max-width: 70px;"><img src='{% static "transport/icons/icon_bagage.svg" %}' style='width: 17px; vertical-align: -10%; margin-right: 5px;' />{{ offer.baggage_places }}</div>
+                                                <div class="col" style="margin-top: 7px;"><img src='{% static "transport/icons/icon_gearbox.svg" %}' style='width: 17px; vertical-align: -10%; margin-right: 5px;' />{{ offer.automat_gearbox }}</div>
+                                            </div>
+                                        </div>
+                                        <div style="margin-top: 58%; font-size: 16px;">
+                                            <span style="margin-bottom: 0%; font-size: 22px; color: #2a9d8f"><b>${{ offer.price_per_day }}</b></span>
+                                            per day
+                                        </div>
+                        
+                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+            </div>
+            
+            <div class="row" style="max-width: 85.3%; min-width: 340px;">
+                <div class="col">
+                    <h5 style="font-weight: 700; text-align: left; margin-left: 4%; margin-bottom: 15px; margin-top: 3%;">{{ user_page_info.username }}'s reviews:</h5>
+                </div>
+                <div class="col" style="text-align: right; margin-bottom: 0px; margin-top: 3%;">
+                    <div><a href="#" class="btn btn-link" style="color: #2a9d8f; padding: 0%; font-weight: 800;">Leave Your review >></a></div>
+                </div>
+                            
+            </div>
+            
+            <div class="card mb-2 rounded-6 shadow p-2" style="border-radius: 15px; margin-top: 0%; max-width: 85.3%; min-width: 340px;">
+                <div class="card-body">
+                    {% for review in reviews %}
+                        <div class="row" style="max-height: 100px; margin-bottom: 25px;">
+                            <div class="col" style="max-width: 80px;margin-bottom: 4px;">
+                                <img src='{% static "transport/icons/user.png" %}' alt="user_image"  style='max-width: 70px; min-width: none; margin-top: 4px;' />
+                            </div>
+                            <div class='col-3' style="min-width: 150px;margin-bottom: 4px;">
+                                <div style="color: #2a9d8f; font-weight: 700; font-size:18px">{{ review.author.username }}</div>
+                                <div style="font-size: 14px;">{{ review.timestamp }}</div>
+                                <div style="font-size: 14px;">Gived score: {{ review.rating }}/5</div>
+                            </div>
+                            <div class="col-7">{{ review.text }}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <script src="{% static 'transport/search.js' %}" type="text/babel"></script>
+{% endblock %}

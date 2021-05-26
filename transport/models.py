@@ -23,6 +23,9 @@ def image_format_validator(value):
 # Create your models here.
 class User(AbstractUser):
     phone = models.CharField(max_length=20, blank=True, null=True)
+    adress = models.CharField(max_length=100, blank=True, null=True)
+    about = models.TextField(max_length=500, blank=True, null=True)
+    datestamp = models.DateField(auto_now_add=True, blank=True, null=True)
     def __str__(self):
         return f"{self.pk}.{self.username}.{self.email}.{self.phone}"
     
@@ -56,7 +59,7 @@ class Additional(models.Model):
     add_name = models.CharField(max_length=50)
     add_price = models.DecimalField(null=True, max_digits=7, decimal_places=2)
     def __str__(self):
-        return f"{self.add_name}.{self.add_price}"
+        return f"{self.pk}_{self.add_name}.{self.add_price}"
 
 class Transport(models.Model):
     name = models.CharField(max_length=50)
@@ -96,6 +99,8 @@ class Deal(models.Model):
     client = models.ForeignKey(User, on_delete=models.CASCADE, related_name="rent_deals")
     start_date = models.DateField()
     close_date = models.DateField()
+    deliver_to = models.CharField(max_length=100, null=True, blank=True)
+    pick_up_from = models.CharField(max_length=100, null=True, blank=True)
     additionals = models.ManyToManyField(Additional, blank=True, related_name='on_deals')
     total_price = models.DecimalField(max_digits=7, decimal_places=2, null=True)
     pay_method = models.ForeignKey(Pay_method, on_delete=models.CASCADE, related_name='deals')

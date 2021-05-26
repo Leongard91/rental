@@ -33,7 +33,7 @@
                         <li class="nav-item"><a class="nav-link text-white" href="#"><b>FAQ</b></a></li>
                         <li class="nav-item"><a class="nav-link text-white" href="#"><b>CONTACT</b></a></li>
                         {% if user.is_authenticated %}
-                            <li><a class="nav-link text-white" href="#"><strong>PROFILE({{ user.username }})</strong></a></li>
+                            <li><a class="nav-link text-white" href="/user/{{ user.pk }}"><strong>PROFILE({{ user.username }})</strong></a></li>
                             <li class="nav-item"><a class="nav-link text-white" href="{% url 'logout' %}"><b>LOG OUT</b></a></li>
                         {% else %}
                             <li class="nav-item"><a class="nav-link text-white" href="{% url 'register' %}"><b>Register</b></a></li>
