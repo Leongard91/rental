@@ -10,7 +10,7 @@ from datetime import date
 from django.db.models import Max, Min
 
 from .models import User, Response, Pay_method, Category, Type, Additional, Transport, Deal
-from .forms import NewUserForm, LoginForm, NewTransportForm
+from .forms import NewUserForm, LoginForm, NewTransportForm, NewReviewForm 
 # Create your views here.
 
 global local_transport
@@ -46,7 +46,6 @@ def search(f):
             instance['time_delta'] = time_delta.days
             request.session['time_delta'] = time_delta.days
 
-            # !!!!CEnge for filtering
             # Price range
             max_price = Transport.objects.aggregate(Max('price_per_day'))['price_per_day__max']
             min_price = Transport.objects.aggregate(Min('price_per_day'))['price_per_day__min']
@@ -80,6 +79,8 @@ def search(f):
             # Save result in global variable for filters
             global local_transport
             local_transport[request.user.pk] = offers
+            #response = HttpResponse("Cookie Set")  
+            #response.set_cookie('local_transport', offers)  
 
             instance['offers'] = offers
             return render(request, 'transport/search.html', instance)
@@ -203,6 +204,7 @@ def add_offer(request):
             new_tr = Transport(name=name, description=description, category=category, type=type, pick_up_location=pick_up_location, \
                 price_per_day=price_per_day, owner=owner, passenger_places=passenger_places, baggage_places=baggage_places, air_conditioner=air_conditioner, automat_gearbox=automat_gearbox, photo=photo)
             new_tr.save()
+            instance['form'] = NewTransportForm()
             instance['message'] = 'SUCCESS'
             return render(request, 'transport/add_offer.html', instance)
         instance['error'] = 'Invalid Input'
@@ -367,5 +369,20 @@ def user_view(request, id):
 
     reviews = Response.objects.filter(on_user=user_page_info).order_by("-timestamp")
     instance['reviews'] = reviews
-    
+
+    if request.GET.get('review_inp'):
+        if request.method == 'POST':
+            text = request.POST['text']
+            rating = request.POST['rating']
+            author = request.user
+            on_user = user_page_info
+            try: Response.objects.create(text=text, rating=rating, author=author, on_user=on_user)
+            except: 
+                instance["error"] = "Insert error"
+                return render(request, 'transport/new_review.html', instance)
+            return HttpResponseRedirect(f'/user/{user_page_info.pk}')
+        instance['user_page_info'] = user_page_info
+        instance['form'] = NewReviewForm()
+        return render(request, 'transport/new_review.html', instance)
+
     return render(request, 'transport/user_page.html', instance)

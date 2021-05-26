@@ -5,6 +5,7 @@ CATEGORY_CHOISES = [('0', 'Choose Category')] + [(category.pk, category.category
 TYPE_CHOISES = [('0', 'Choose Type')] + [(type.pk, type.type_name) for type in Type.objects.all().order_by('pk')]
 AIR_COND_CHOISES = [('Yes', 'Air Conditioner'), ('No', 'No Air Conditioner')]
 GEARBOX_CHOISES = [('Automat', "Gearbox Automat"), ('Manual', "Gearbox Manual")]
+RATE_CHOISES = [('1', 'Choose Rate')] + [(rate, rate) for rate in range(1,6)]
 
 class LoginForm(forms.Form):
     username = forms.CharField(label='', max_length=40, widget=forms.TextInput(attrs={'placeholder': 'Usename', 'class': 'form-control'}))
@@ -31,3 +32,7 @@ class NewTransportForm(forms.Form):
     price_per_day = forms.DecimalField(label='', max_digits=7, decimal_places=2, widget=forms.NumberInput(attrs={'placeholder': 'Price, USD/day', 'class': 'form-control'}))
     pick_up_location = forms.CharField(label='', max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Pick-up location (Country, State, City)', 'class': 'form-control'}))
     photo = forms.FileField(label='', widget=forms.FileInput(attrs={'class': 'form-control', 'style': 'height:20%; pading: 0px;'}))
+
+class NewReviewForm(forms.Form):
+    rating = forms.ChoiceField(label='', choices=RATE_CHOISES, widget=forms.Select(attrs={'placeholder': 'Choose Rate', 'class': 'form-control'}))
+    text = forms.CharField(label='', max_length=500, widget=forms.Textarea(attrs={'placeholder': 'Enter Your review text...', 'class': 'form-control'}))

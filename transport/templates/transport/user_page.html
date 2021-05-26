@@ -70,7 +70,11 @@
                     <h5 style="font-weight: 700; text-align: left; margin-left: 4%; margin-bottom: 15px; margin-top: 3%;">{{ user_page_info.username }}'s reviews:</h5>
                 </div>
                 <div class="col" style="text-align: right; margin-bottom: 0px; margin-top: 3%;">
-                    <div><a href="#" class="btn btn-link" style="color: #2a9d8f; padding: 0%; font-weight: 800;">Leave Your review >></a></div>
+                    
+                    <form method="GET">
+                        <input type="hidden" name="review_inp" value="{{ user_page_info.pk }}">
+                        <input type="submit" name="" id="" class="btn btn-link" style="color: #2a9d8f; padding: 0%; font-weight: 800;" value="Leave Your review >>">
+                    </form>
                 </div>
                             
             </div>
@@ -85,7 +89,7 @@
                             <div class='col-3' style="min-width: 150px;margin-bottom: 4px;">
                                 <div style="color: #2a9d8f; font-weight: 700; font-size:18px">{{ review.author.username }}</div>
                                 <div style="font-size: 14px;">{{ review.timestamp }}</div>
-                                <div style="font-size: 14px;">Gived score: {{ review.rating }}/5</div>
+                                <div style="font-size: 14px;">Gived rate: {{ review.rating }}/5</div>
                             </div>
                             <div class="col-7">{{ review.text }}</div>
                         </div>

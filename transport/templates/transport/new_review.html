@@ -1,0 +1,18 @@
+{% extends 'transport/layout.html' %}
+{% load static %}
+
+{% block title %}Review{% endblock %}
+
+{% block body %}
+
+    <div class='mb-3'>
+        <h2 style='margin-bottom: 30px; margin-top: 60px; text-align: center;' >Your Review on {{ user_page_info.username }}:</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" class='btn btn-warning' value="Add">
+        </form>
+    </div>
+    
+{% endblock %}
