@@ -235,7 +235,6 @@ def add_offer(request):
     instance['form'] = NewTransportForm()
     return render(request, 'transport/add_offer.html', instance)
 
-# delete in the end
 @search
 def search_view(request):
     instance = {}
@@ -306,7 +305,8 @@ def offer_filter(request):
         'min_price': filtered_min_price
     }, status=200)
 
-@search    
+@search
+@login_required(login_url='login')    
 def details_view(request, transport_id):
     instance = {}
     offer = Transport.objects.get(pk=transport_id)
@@ -374,6 +374,8 @@ def details_view(request, transport_id):
         return render(request, 'transport/success.html', instance)
     return render(request, 'transport/details.html', instance)
 
+@search
+@login_required(login_url='login') 
 def user_view(request, id):
     instance = {}
     user_page_info = User.objects.get(pk=id)

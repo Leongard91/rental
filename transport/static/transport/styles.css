@@ -6,7 +6,7 @@ body {
 }
 
 #header {
-    background-image: url(https://raw.githubusercontent.com/Leongard91/rental/main/transport/static/transport/icons/header_backgroundm.jpg), #264653;
+    background-image: url(https://raw.githubusercontent.com/Leongard91/rental/main/transport/static/transport/icons/header_backgroundm.jpg);
 
     /* Center and scale the image nicely */
     background-position: center;
