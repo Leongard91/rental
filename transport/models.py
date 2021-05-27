@@ -1,7 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.db.models.deletion import DO_NOTHING, SET_NULL
-from django.db.models.fields import BLANK_CHOICE_DASH, DurationField, related
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 import os

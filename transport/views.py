@@ -1,24 +1,23 @@
 from django.shortcuts import render
 from django.urls import reverse
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, response
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 import time
-from datetime import date
+from datetime import date, timedelta
 from django.db.models import Max, Min
 
 from .models import User, Response, Pay_method, Category, Type, Additional, Transport, Deal
 from .forms import NewUserForm, LoginForm, NewTransportForm, NewReviewForm 
-# Create your views here.
 
+# Create your views here.
 global local_transport
 local_transport = {}
 
 def search(f):
     def wrapper(request, *args, **kwargs):
-        if request.GET.get('search_button') == 'SEARCH':
+        if request.GET.get('search_button'):
             # Creating dict for rendering search page
             instance = {}
             categoryes = Category.objects.all().order_by('pk')
@@ -27,9 +26,9 @@ def search(f):
             instance['types'] = types
 
             # Get data from request
-            location = request.GET['location'].upper()
-            start_date_input = request.GET['start_date']
-            end_date_input = request.GET['end_date']
+            location = request.GET.get('location', '').upper()
+            start_date_input = request.GET.get('start_date', date.today().isoformat())
+            end_date_input = request.GET.get('end_date', (date.today() + timedelta(days=1)).isoformat())
             try:
                 start_date = date.fromisoformat(start_date_input)
                 end_date = date.fromisoformat(end_date_input)
@@ -66,8 +65,6 @@ def search(f):
                     if deal.rent_transport in filtered_transports:
                         filtered_transports.remove(deal.rent_transport)
             
-
-            #offers = [((transport.price_per_day * time_delta.days), transport) for transport in filtered_transports]
             offers = []
             for transport in filtered_transports:
                 total_price = transport.price_per_day * time_delta.days
@@ -76,13 +73,12 @@ def search(f):
                 owner_rating = round((sum(ratings) / len(ratings)), 1)
                 offers.append((owner_rating, responses_count,  total_price, transport))
 
+            instance['offers'] = offers
+
             # Save result in global variable for filters
             global local_transport
             local_transport[request.user.pk] = offers
-            #response = HttpResponse("Cookie Set")  
-            #response.set_cookie('local_transport', offers)  
-
-            instance['offers'] = offers
+            
             return render(request, 'transport/search.html', instance)
         return f(request, *args, **kwargs)
     return wrapper
@@ -145,17 +141,20 @@ def register(request):
     instance['form'] = NewUserForm()
     return render(request, 'transport/register.html', instance)
 
-#!!!!!  add order
 @search
 def get_offers(request):
 
-    # Get start and end points
-    start = int(request.GET.get('start') or 0)
-    end = int(request.GET.get('end') or (start + 9))
+    offers = Transport.objects.all()
+    count_rating_offer = []
+    for offer in offers:
+        ratings = [response.rating for response in offer.owner.received_responses.all()]
+        responses_count = len(ratings)
+        owner_rating = round((sum(ratings) / len(ratings)), 1)
+        count_rating_offer.append((responses_count, owner_rating, offer))
 
     # Generate lists of offers
-    data = []
-    for offer in Transport.objects.all().order_by('-timestamp'):
+    data_unsorted = []
+    for rating_count, owner_rating, offer in count_rating_offer:
         timestamp = offer.timestamp
         timestamp = timestamp.strftime('%b %d, %Y, %#I:%M %p')
         offer_data = {
@@ -165,16 +164,40 @@ def get_offers(request):
             'price_per_day': offer.price_per_day,
             'photo': 'media/' + offer.photo.name,
             'pick_up_location': offer.pick_up_location,
-            'timestamp': timestamp
+            'timestamp': timestamp,
+            'details': f'/details/{offer.pk}',
+            'rating_count': rating_count,
+            'owner_rating': owner_rating,
+            'owner_page': f'/user/{offer.owner.pk}'
         }
-        data.append(offer_data)
+        data_unsorted.append(offer_data)
+
+    # Get start and end points for data portion
+    start = int(request.GET.get('start') or 0)
+    end = int(request.GET.get('end') or (start + 9))
+    order = (request.GET.get('order') or 'timestamp.True').split('.')
+    orde_value = order[0]
+    reverse_value = (order[1] == 'True')
+
+    if end > Transport.objects.count(): 
+        end = Transport.objects.count()
+
+    # Data sorting
+    try:
+        data = sorted(data_unsorted, key=lambda k: k[orde_value], reverse=reverse_value)
+    except: pass
+
+    data_portion = []
+    for offer_index in range(start-1, end):
+        data_portion.append(data[offer_index])
 
     # Artificially delay speed of response 
-    time.sleep(1)
+    time.sleep(0.5)
 
     # Return list of offers
     return JsonResponse({
-        'offers': data
+        'offers': data_portion,
+        'max': len(data)
     }, status=200)
 
 @search
@@ -224,8 +247,7 @@ def search_view(request):
 
 @search
 def offer_filter(request):
-    global local_transport
-
+    global local_transpor
     # Get order
     try:
         order = request.GET['order'].split('-')
@@ -282,7 +304,7 @@ def offer_filter(request):
         'offers' : data,
         'max_price': filtered_max_price,
         'min_price': filtered_min_price
-    })
+    }, status=200)
 
 @search    
 def details_view(request, transport_id):

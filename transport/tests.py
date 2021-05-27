@@ -1,5 +1,4 @@
-from django.test import TestCase, Client
-from django.http import response
+from django.test import TestCase
 from .models import Deal, Response, User, Transport, Pay_method
 import datetime
 

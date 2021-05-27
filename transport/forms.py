@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Response, Pay_method, Category, Type, Additional, Transport, Deal
+from .models import Category, Type
 
 CATEGORY_CHOISES = [('0', 'Choose Category')] + [(category.pk, category.category_name) for category in Category.objects.all().order_by('pk')]
 TYPE_CHOISES = [('0', 'Choose Type')] + [(type.pk, type.type_name) for type in Type.objects.all().order_by('pk')]

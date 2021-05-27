@@ -4,14 +4,22 @@
 {% block title %}Rent{% endblock %}
 
 {% block body %}
+<div style="text-align: center;">
+
     <div id='index'></div>
-    <h2 style="color: #2798F8; font-weight: 700; text-align: center; margin: 60px;">All Offers:</h2>
+    <h3 style="font-weight: 700; text-align: center; margin: 60px;">All transport rental deals:</h3>
     <div class="row justify-content-md-center" style="text-align: center;">
-        <div class="col col-lg-2"><button type="button" class="btn btn-link"><b style="font-size: 20px;">Economy</b></button></div>
-        <div class="col col-lg-2"><button type="button" class="btn btn-link"><b style="font-size: 20px;">Standart</b></button></div>
-        <div class='col col-lg-2'><button type="button" class="btn btn-link"><b style="font-size: 20px;">Luxury</b></button></div>
+        <div class="col col-lg-2" style="max-width: 200px;"><button id="sort" value="timestamp.True" type="button" class="btn btn-link" style="font-size: 18px; color: black; font-weight: 700;">New</button></div>
+        <div class="col col-lg-2" style="max-width: 200px;"><button id="sort" value="price_per_day.False" type="button" class="btn btn-link" style="font-size: 18px; color: black; font-weight: 700;">Cheaper</button></div>
+        <div class='col col-lg-2' style="max-width: 200px;"><button id="sort" value="owner_rating.True" type="button" class="btn btn-link" style="font-size: 18px; color: black; font-weight: 700;">Best Rating</button></div>
     </div>
-    <div id="offers" style="margin-left: 5%; margin-right: 5%; text-align: center;"></div>
+    <br>
+    <div style="text-align: right; max-width: 1260px;"><form method="GET"><input type="submit" class="btn btn-link" style="font-size: 18px; color: black; font-weight: 700;" name="search_button" value="See more >"></form></div> 
+    <div id="offers" style="margin-left: auto; margin-right: auto; text-align: center; max-width: 1000px; ">
+        <div id="offers-1"></div>
+    </div>
 
     <script src="{% static 'transport/index.js' %}" type="text/babel"></script>
+</div>
+
 {% endblock %}
