@@ -13,7 +13,7 @@
                     <ul class="list-group" style="padding-left: 20px; ">
                         {% for type in types %}
                             <li class="list-group-item" style="border: none; padding: 1%; color: #2a9d8f; font-weight: 600;">
-                                <input class="form-check-input me-1" type="checkbox" style="zoom: 1.15;" value="{{ type.type_name }}" aria-label="...">
+                                <input class="form-check-input me-1" type="checkbox" style="zoom: 1.15;" value="type_{{ type.pk }}" aria-label="...">
                                 {{ type.type_name }}
                             </li>
                         {% endfor %}
@@ -23,7 +23,7 @@
                     <ul class="list-group" style="padding-left: 20px; ">
                         {% for category in categoryes %}
                             <li class="list-group-item" style="border: none; padding: 1%; color: #2a9d8f; font-weight: 600;">
-                                <input class="form-check-input me-1"  type="checkbox" style="zoom: 1.15;" value="{{ category.category_name }}" aria-label="...">
+                                <input class="form-check-input me-1"  type="checkbox" style="zoom: 1.15;" value="cat_{{ category.pk }}" aria-label="...">
                                 {{ category.category_name }}
                             </li>
                         {% endfor %}

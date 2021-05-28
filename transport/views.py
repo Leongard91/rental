@@ -70,7 +70,8 @@ def search(f):
                 total_price = transport.price_per_day * time_delta.days
                 ratings =[response.rating for response in transport.owner.received_responses.all()]
                 responses_count = len(ratings)
-                owner_rating = round((sum(ratings) / len(ratings)), 1)
+                try: owner_rating = round((sum(ratings) / len(ratings)), 1)
+                except: owner_rating = 1.0
                 offers.append((owner_rating, responses_count,  total_price, transport))
 
             instance['offers'] = offers
@@ -149,7 +150,8 @@ def get_offers(request):
     for offer in offers:
         ratings = [response.rating for response in offer.owner.received_responses.all()]
         responses_count = len(ratings)
-        owner_rating = round((sum(ratings) / len(ratings)), 1)
+        try: owner_rating = round((sum(ratings) / len(ratings)), 1)
+        except: owner_rating = 1.0
         count_rating_offer.append((responses_count, owner_rating, offer))
 
     # Generate lists of offers
@@ -164,6 +166,10 @@ def get_offers(request):
             'price_per_day': offer.price_per_day,
             'photo': 'media/' + offer.photo.name,
             'pick_up_location': offer.pick_up_location,
+            'passenger_places': offer.passenger_places,
+            'air_conditioner': offer.air_conditioner,
+            'baggage_places': offer.baggage_places,
+            'automat_gearbox': offer.automat_gearbox,
             'timestamp': timestamp,
             'details': f'/details/{offer.pk}',
             'rating_count': rating_count,
@@ -257,17 +263,21 @@ def offer_filter(request):
     # Filtering prosess
     filters = request.GET['filters'].split(',')
     if not request.GET['filters']:
-        filters = [category.category_name for category in Category.objects.all()] + [type.type_name for type in Type.objects.all()]
+        filters = [f"cat_{category.pk}" for category in Category.objects.all()] + [f"type_{type.pk}" for type in Type.objects.all()]
     filtered_transport = []
     local_transport_for_filtering = local_transport[request.user.pk]
     for owner_rating, responses_count, total_price, transport in local_transport_for_filtering:
-        if (transport.category.category_name in filters) or (transport.type.type_name in filters):
+        if (f"cat_{transport.category.pk}" in filters) or (f"type_{transport.type.pk}" in filters):
             filtered_transport.append((owner_rating, responses_count, total_price, transport))
 
     # Get max-min price from filtered_transport
     filtered_transport_prices = [total_price for owner_rating, responses_count, total_price, transport in filtered_transport]
-    filtered_max_price = max(filtered_transport_prices)
-    filtered_min_price = min(filtered_transport_prices)
+    try:
+        filtered_max_price = max(filtered_transport_prices)
+        filtered_min_price = min(filtered_transport_prices)
+    except:
+        filtered_max_price = 0
+        filtered_min_price = 0
 
     # Construct data for response
     data_unsorted = []
@@ -330,7 +340,8 @@ def details_view(request, transport_id):
     # Get owner rating
     ratings =[response.rating for response in offer.owner.received_responses.all()]
     responses_count = len(ratings)
-    owner_rating = round((sum(ratings) / len(ratings)), 1)
+    try: owner_rating = round((sum(ratings) / len(ratings)), 1)
+    except: owner_rating = 1.0
     instance['responses_count'] = responses_count
     instance['owner_rating'] = owner_rating
 
@@ -384,12 +395,24 @@ def user_view(request, id):
     # Get owner rating
     ratings =[response.rating for response in user_page_info.received_responses.all()]
     responses_count = len(ratings)
-    owner_rating = round((sum(ratings) / len(ratings)), 1)
+    try: owner_rating = round((sum(ratings) / len(ratings)), 1)
+    except ZeroDivisionError: owner_rating = 1.0
     instance['responses_count'] = responses_count
     instance['owner_rating'] = owner_rating
 
     offers = Transport.objects.filter(owner=user_page_info)
     instance['offers'] = offers
+
+    deals = Deal.objects.all()
+    offer_deals = [(offer, offer.deals.all()) for offer in offers]
+    filtered_offer_deals =[]
+    for offer, deals in offer_deals:
+        filtered_deals = []
+        for deal in deals:
+            if deal.start_date > date.today():
+                filtered_deals.append(deal)
+        filtered_offer_deals.append((offer, filtered_deals))
+    instance['transport_deals'] = filtered_offer_deals
 
     reviews = Response.objects.filter(on_user=user_page_info).order_by("-timestamp")
     instance['reviews'] = reviews

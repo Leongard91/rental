@@ -58,9 +58,21 @@
                                     </div>
                                 </div>
                             </div>
+                            {% if user.pk == offer.owner.pk %}
+                                {% for transport, deals in transport_deals %}
+                                    {% if offer.pk == transport.pk %}
+                                        {% for deal in deals %}
+                                            <div class="alert alert-primary text-center">
+                                                Booked by {{ deal.client.username }} from {{ deal.start_date }} to {{ deal.close_date }}.
+                                                Please contact width client by them phone numb: {{ deal.client.phone }} 
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}          
+                            {% endif %}
                         </div>
                     {% endfor %}
-
+                    
             </div>
             
             <div class="row" style="max-width: 85.3%; min-width: 340px;">

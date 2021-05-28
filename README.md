@@ -32,6 +32,7 @@ In project’s main directory You will see next folders and files:
 2. `README.md` - You currently reading file.
 3. `manage.py` - Django managing code.
 4. `db.sqlite3` - the database used by application.
+5. `screenshorts` - folder with screenshorts for README presentation.
 5. `reservation` - folder with Django project settings files.
 6. `media` - folder with images uploaded by users. 
 7. `transport` - folder, which includes application files.
@@ -67,22 +68,43 @@ The design was developed with mentioned of last UIX tendentious.
 All pages and blocks have a mobile-responsive design and will be correctly screened on any device.
 
 ### Usage:
+
+#### ALL OFFERS page:
+The first page, which You will see, will be "ALL OFFERS" page.
+
+![alt text]()
+On the top of the page You will see header with navigation links, project logo and some search fields. Let's scroll down for now! On the main part of the page appears some cards. This is an offers cards for all transport, which can be rented on this platform. Static `index.js` file downloads 10 offers every time when You reach the bottom of the page. On each card, You can find major information about offers like title, price per day, owner rating, passenger and baggage capacity, transport gearbox type and air conditioner attending. 
+
+##### Order buttons
+Upper from offers zone are buttons by which You can define an order off offers appearing: by Newest, Cheapest or Best owners ratings.
+
+##### Search buttons and fields
+Clicking to the `See more` button takes You to the `search` page with the same offers.
+In the header's search field You can find ready-to-use transport in a particular location and desired dates.
+
+##### DETAIS button
+`DETAILS` button on offer card available only for registered users, so once be clicked, You will be redirected to the login page. If You allready logged in, You will see `details` page of choosed offer. 
+
+
 #### Log in page:
-The first page, which You will see, will be "Log in" page.
+After clicking on `LOG IN` button on the page header, "Login" page will be screened.
 
-![alt text](https://raw.githubusercontent.com/Leongard91/SDPC/0c04ca0a6cfee9c9c40684e18f3c1afb07cb3903/screenshots/Login.JPG)
+![alt text]()
 
-You have no user account yet, so you need to click on `Regisrer` in the header of the page, and pass registration. Once all necessary information becomes filled, application updates the "users" table in the database and create a new special table for registered user, into which will be inserted its calculation history.
+You have no user account yet, so you need to click on `Regisrer` in the header of the page or under login button, and pass registration. Once all necessary information becomes filled, application updates the "User" model and use enterede information for user page.
 
-After registration, You will be redirected to the "Log in" page.
-Enter your username/password and click the `Log in` button!
+After registration, You will be logged in and redirected to the "ALL OFFERS" page.
+Let's log in and take a look to the "search" page.
 
-#### Main page:
-If successfully logged in, You will be redirected to the "main" page.
 
-![alt text](https://raw.githubusercontent.com/Leongard91/SDPC/0c04ca0a6cfee9c9c40684e18f3c1afb07cb3903/screenshots/main.JPG)
-On the main page, You will see a welcome message and `CALCULATE` button, as buttons in the header of the page. Click `CALCULATE` to start!
+#### Search page:
+After choosing location and dates on any page, click to the `SEARCH` button. It will generate GET request and show You the `search` page with filtered information.
 
+![alt text]()
+
+On this page we can see two big blocks: "Filter" and "Your search results". In the first block You will see checkboxes, using which You have ability to filter offers in "Your search results" block by transport "Type" and "Category". When You change filters, "Price range" changes too.
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #### Calculate page:
 After clicking 'CALCULATE' bottom, You will see the next page:
 

@@ -10,10 +10,10 @@
         <form method="POST">
             {% csrf_token %}
             {{ form }}
-            <input type="submit" class='btn btn-primary' value="Login">
+            <input type="submit" class='btn btn-warning' value="Login">
         </form>
         <br>
-        Don't have an account? <a href="{% url 'register' %}">Register In here.</a>
+        Don't have an account? <a href="{% url 'register' %}">Register here.</a>
 
     </div>
 

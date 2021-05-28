@@ -12,13 +12,13 @@ class LoginForm(forms.Form):
     password = forms.CharField(label='', max_length=40, widget=forms.PasswordInput(attrs={'placeholder' : 'Password', 'class': 'form-control'}))
 
 class NewUserForm(forms.Form):
-    username = forms.CharField(label='', max_length=40, widget=forms.TextInput(attrs={'placeholder': 'Usename', 'class': 'form-control'}))
-    password = forms.CharField(label='', max_length=40, widget=forms.PasswordInput(attrs={'placeholder' : 'Password', 'class': 'form-control'}))
-    confirmation = forms.CharField(label='', max_length=40, widget=forms.PasswordInput(attrs={'placeholder' : 'Confinrm Password', 'class': 'form-control'}))
+    username = forms.CharField(label='', max_length=40, widget=forms.TextInput(attrs={'placeholder': 'Usename (required)', 'class': 'form-control'}))
+    password = forms.CharField(label='', max_length=40, widget=forms.PasswordInput(attrs={'placeholder' : 'Password (required)', 'class': 'form-control'}))
+    confirmation = forms.CharField(label='', max_length=40, widget=forms.PasswordInput(attrs={'placeholder' : 'Confinrm Password (required)', 'class': 'form-control'}))
     email = forms.EmailField(label='', max_length=80, min_length=5, required=False, widget=forms.EmailInput(attrs={'placeholder' : 'Email', 'class': 'form-control'}))
-    phone = forms.CharField(label='', max_length=20, min_length=8, widget=forms.TextInput(attrs={'placeholder' : "Phone Number", 'class': 'form-control'}))
+    phone = forms.CharField(label='', max_length=20, min_length=8, widget=forms.TextInput(attrs={'placeholder' : "Phone Number (required)", 'class': 'form-control'}))
     adress = forms.CharField(label='', max_length=100, required=False, widget=forms.TextInput(attrs={'placeholder' : "Your Adress", 'class': 'form-control'}))
-    about = forms.CharField(label='', max_length=500, required=False, widget=forms.TextInput(attrs={'placeholder' : "Tell about You", 'class': 'form-control'}))
+    about = forms.CharField(label='', max_length=500, required=False, widget=forms.Textarea(attrs={'placeholder' : "Tell about You", 'class': 'form-control'}))
 
 class NewTransportForm(forms.Form):
     name = forms.CharField(label='', max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Title', 'class': 'form-control'}))
