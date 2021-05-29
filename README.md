@@ -1,5 +1,5 @@
 # Rental
-#### Video Demo:
+#### Video Demo: https://youtu.be/4S0UPUmRkbE
 ### Distinctiveness and Complexity:
 
 "Rental" is a platform where You can find and rent any type of transport, or rent out your own transport.
@@ -72,7 +72,7 @@ All pages and blocks have a mobile-responsive design and will be correctly scree
 #### ALL OFFERS page:
 The first page, which You will see, will be "ALL OFFERS" page.
 
-![ALL OFFERS page]()
+![ALL OFFERS page](https://github.com/Leongard91/rental/blob/main/screenshots/index_screenshot.JPG)
 On the top of the page You will see header with navigation links, project logo and some search fields. Let's scroll down for now! On the main part of the page appears some cards. This is an offers cards for all transport, which can be rented on this platform. Static `index.js` file downloads 10 offers every time when You reach the bottom of the page. On each card, You can find major information about offers like title, price per day, owner rating, passenger and baggage capacity, transport gearbox type and air conditioner attending. 
 
 ##### Order buttons
