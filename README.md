@@ -100,7 +100,7 @@ Let's log in and take a look to the "search" page.
 #### SEARCh page:
 After choosing location and dates on any page, click to the `SEARCH` button. It will generate GET request and show You the `search` page with filtered information.
 
-![Search page]()
+![Search page](https://github.com/Leongard91/rental/blob/main/screenshots/search_screenshot.JPG)
 
 On this page we can see two big blocks: "Filter" and "Your search results". In the first block You will see checkboxes, using which You have ability to filter offers in "Your search results" block by transport "Type" and "Category", without reloading the whole page. When You change filters, "Price range" changes too.
 
@@ -110,7 +110,8 @@ Let's choose some offer and click on the `DETAILS` button.
 #### DETAILS page:
 After clicking 'DETAILS' bottom, You will see the next page:
 
-![DETAILS page]()
+![DETAILS page](https://github.com/Leongard91/rental/blob/main/screenshots/details_screenshot1.JPG)
+![DETAILS page](https://github.com/Leongard91/rental/blob/main/screenshots/details_screenshot2.JPG)
 
 On this page, You have ability to read all information about transport, including its short description. To actually rent chosen transport, You should complete filing of the "Order details" form below and click the `BOOK NOW` button. The application validates entered information, inserts it into the database, and sends contact instructions to the transport owner. Then You will be redirected to the `SUCCESS` page.
 
@@ -121,7 +122,7 @@ Congratulations! You have rented transport. Please, wait for the owner's call to
 If You logged in, `CREATE OFFER` and `PROFILE` links will be available on the top of the header.
 Click `CREATE OFFER` to see the New Transport form. 
 
-![CREATE OFFER page]()
+![CREATE OFFER page](https://github.com/Leongard91/rental/blob/main/screenshots/create_offer_screenshot.JPG)
 
 To create a new offer and become "owner" You should complete all information in the form. Choosing the transport's photo, and click the `Add` button.
 The application brings entered information through next steps:
@@ -139,10 +140,10 @@ Congratulations! You "owner" from now.
 ### USER page:
 Clicking to the "PROFILE" link in the header or owner name in the offer takes You to the chosen user's page, where You could see all information about that user.
 
-![USER page]()
+![USER page](https://github.com/Leongard91/rental/blob/main/screenshots/user_screenshot.JPG)
 
 This page shows:
-- user rating, work area location, joiner date, and some introduction text; 
+- user rating, work area location, joined date, and some introduction text; 
 - all user's offers;
 - all reviews on this user with rates.
 
@@ -157,7 +158,7 @@ Password: 1
 ```
 That will open to You The Django admin application page, where You have the ability to change any table's data what You want.
 
-![ADMIN page]()
+![ADMIN page](https://github.com/Leongard91/rental/blob/main/screenshots/admin_screenshot.JPG)
 
 
 ### ACCESS:
