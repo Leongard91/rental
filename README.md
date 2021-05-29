@@ -89,7 +89,7 @@ In the header's search field You can find ready-to-use transport in a particular
 #### LOG IN page:
 After clicking on `LOG IN` button on the page header, "Login" page will be screened.
 
-![Log in page]()
+![Log in page](https://github.com/Leongard91/rental/blob/main/screenshots/login_screenshot.JPG)
 
 You have no user account yet, so you need to click on `Regisrer` in the header of the page or under login button, and pass registration. Once all necessary information becomes filled, application updates the "User" model and use enterede information for user page.
 
