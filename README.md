@@ -11,18 +11,18 @@ Using this app You can:
 - Find rent offers in a particular region and necessary dates.
 - Filter and order offers by all parameters.
 - View details about chosen transport and its owner.
-- Rent transport and leave your rate with a comment about the owner.
+- Rent transport and leave your rate with a comment about owner.
 - Create a database of users (owners and customers).
 
 The application can be used as a part of a bigger project or evolve separately by growing functionality and assortment. 
 
 ### Installation:
 1. Download and install [Python](https://www.python.org/downloads/).
-2. Unzip the "Rental.zip" file to the working folder.
-3. Open the "Rental" folder in the terminal by following commands:
+2. Unzip the "rental.zip" file to the working folder.
+3. Open the "rental" folder in the terminal by following commands:
 ```
-1) $ cd (path to saved Rental folder)
-2) $ cd Rental
+1) $ cd (path to saved rental folder)
+2) $ cd rental
 ```
 4. Enter `pip install -r requirements.txt` to install/update all necessary libraries.
 
@@ -32,30 +32,30 @@ In project’s main directory You will see next folders and files:
 2. `README.md` - You currently reading file.
 3. `manage.py` - Django managing code.
 4. `db.sqlite3` - the database used by application.
-5. `screenshorts` - folder with screenshorts for README presentation.
+5. `screenshorts` - folder with screenshorts for README.md file.
 5. `reservation` - folder with Django project settings files.
 6. `media` - folder with images uploaded by users. 
 7. `transport` - folder, which includes application files.
 
 In `transport` folder You can find:
-1) `migrations` folder with database migrate files;
-2) `static/transport` folder which includes js, css and icons files;
-3) `templates/transport` folder with application's HTML-tamplates;
-4) `admin.py` - admin page settings file;
-5) `apps.py` - application configurations file;
-6) `forms.py` - separately created file for storing all forms used in app;
-7) `models.py` - file for storing models objects
-8) `tests.py` - file where written some logical tests for application
-9) `urls.py` - file which defines URL-path and activated function;
-10) `views.py` - file which determines and render application responses.
+ - `migrations` folder with database migrate files;
+ - `static/transport` folder which includes js, css and icons files;
+ - `templates/transport` folder with application's HTML-tamplates;
+ - `admin.py` - admin page settings file;
+ - `apps.py` - application configurations file;
+ - `forms.py` - separately created file for storing all forms used in app;
+ - `models.py` - file for storing models objects
+ - `tests.py` - file where written some logical tests for application
+ - `urls.py` - file which defines URL-path and activated function;
+ - `views.py` - file which determines and render application responses.
 
 ### Easy Start:
 At the moment application doesn't upload to the server. So You need to start it using the Django command.
 
 1. Open the "Rental" folder in the terminal by following commands:
 ```
-1) $ cd (path to saved SDPC folder)
-2) $ cd Rental
+1) $ cd (path to saved rental folder)
+2) $ cd rental
 ```
 2. Run server. In the command line type:
 ```
@@ -72,7 +72,7 @@ All pages and blocks have a mobile-responsive design and will be correctly scree
 #### ALL OFFERS page:
 The first page, which You will see, will be "ALL OFFERS" page.
 
-![alt text]()
+![ALL OFFERS page]()
 On the top of the page You will see header with navigation links, project logo and some search fields. Let's scroll down for now! On the main part of the page appears some cards. This is an offers cards for all transport, which can be rented on this platform. Static `index.js` file downloads 10 offers every time when You reach the bottom of the page. On each card, You can find major information about offers like title, price per day, owner rating, passenger and baggage capacity, transport gearbox type and air conditioner attending. 
 
 ##### Order buttons
@@ -83,13 +83,13 @@ Clicking to the `See more` button takes You to the `search` page with the same o
 In the header's search field You can find ready-to-use transport in a particular location and desired dates.
 
 ##### DETAIS button
-`DETAILS` button on offer card available only for registered users, so once be clicked, You will be redirected to the login page. If You allready logged in, You will see `details` page of choosed offer. 
+`DETAILS` button on offer card available only for registered users, so once be clicked, You will be redirected to the login page. If You allready logged in, You will see `details` page of chosen offer. 
 
 
-#### Log in page:
+#### LOG IN page:
 After clicking on `LOG IN` button on the page header, "Login" page will be screened.
 
-![alt text]()
+![Log in page]()
 
 You have no user account yet, so you need to click on `Regisrer` in the header of the page or under login button, and pass registration. Once all necessary information becomes filled, application updates the "User" model and use enterede information for user page.
 
@@ -97,62 +97,70 @@ After registration, You will be logged in and redirected to the "ALL OFFERS" pag
 Let's log in and take a look to the "search" page.
 
 
-#### Search page:
+#### SEARCh page:
 After choosing location and dates on any page, click to the `SEARCH` button. It will generate GET request and show You the `search` page with filtered information.
 
-![alt text]()
+![Search page]()
 
-On this page we can see two big blocks: "Filter" and "Your search results". In the first block You will see checkboxes, using which You have ability to filter offers in "Your search results" block by transport "Type" and "Category". When You change filters, "Price range" changes too.
+On this page we can see two big blocks: "Filter" and "Your search results". In the first block You will see checkboxes, using which You have ability to filter offers in "Your search results" block by transport "Type" and "Category", without reloading the whole page. When You change filters, "Price range" changes too.
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#### Calculate page:
-After clicking 'CALCULATE' bottom, You will see the next page:
+Let's choose some offer and click on the `DETAILS` button.
 
-![alt text](https://raw.githubusercontent.com/Leongard91/SDPC/0c04ca0a6cfee9c9c40684e18f3c1afb07cb3903/screenshots/Calculate.JPG)
 
-On this page, You should choose all options for your new door. Options of selections got directly from the database, so don't try to change It here. JavaScript code makes this page more interactive, so You can see all parameters and doors view before as `Calculate` button will be pushed.
-Click 'Calculate'!
+#### DETAILS page:
+After clicking 'DETAILS' bottom, You will see the next page:
 
-When 'Calculate' pressed, the application automatically make the next operations: 
-1. Creates an order number and estimated installation date.
-2. Calculate door price based on chosen parameters and database price information. 
-3. Updates the user's history table.
-4. Fills prepared '.xlsx' form.
-5. Creates offer's pdf file from this '.xlsx' form and saves it in the pdf-archive folder
-6. Redirect You to the "Calculated" page, where You could see chosen parameters, calculated price, and "Print" button. 
+![DETAILS page]()
 
-![alt text](https://raw.githubusercontent.com/Leongard91/SDPC/main/screenshots/calculated2.JPG)
+On this page, You have ability to read all information about transport, including its short description. To actually rent chosen transport, You should complete filing of the "Order details" form below and click the `BOOK NOW` button. The application validates entered information, inserts it into the database, and sends contact instructions to the transport owner. Then You will be redirected to the `SUCCESS` page.
 
-Once click "Print", the application gets created earlier file from pdf-archive, which You can print out or save to your device.
+Congratulations! You have rented transport. Please, wait for the owner's call to hear other information.
 
-### History page:
-If click on the "History" in the header, You will see next:
 
-![alt text](https://raw.githubusercontent.com/Leongard91/SDPC/main/screenshots/History.JPG)
+### CREATE OFFER page:
+If You logged in, `CREATE OFFER` and `PROFILE` links will be available on the top of the header.
+Click `CREATE OFFER` to see the New Transport form. 
 
-This page shows your offer history from the database history table.
-Click on the highlighted offer number to get pdf file from the pdf-archive folder.
+![CREATE OFFER page]()
 
-### Insert New page:
-Although, You can insert new information into the doors catalogs. 
-For this operation, You have to Log Out and Log in like 'Adminitraror':
+To create a new offer and become "owner" You should complete all information in the form. Choosing the transport's photo, and click the `Add` button.
+The application brings entered information through next steps:
+1. Image saving:
+- creates new fone image in a particular size and format;
+- resize and put uploaded photo in the center of created fone;
+- creates user's folder in media root;
+- saves the converted photo in user's folder;
+- saves path to this photo in the database.
+2. Gets from "POST" request other information, validates, and inserts it into the db.
+3. Sends back confirmation "SUCCESS" message. 
+
+Congratulations! You "owner" from now.
+
+### USER page:
+Clicking to the "PROFILE" link in the header or owner name in the offer takes You to the chosen user's page, where You could see all information about that user.
+
+![USER page]()
+
+This page shows:
+- user rating, work area location, joiner date, and some introduction text; 
+- all user's offers;
+- all reviews on this user with rates.
+
+You have the ability to leave your own feedback on this user by clicking `Leave Your review >>` link, so don't lose your chance!
+
+### ADMIN page:
+Although, You can insert new information into the Type, Category, or any other table in the database. 
+For this operation, You have to Log Out, folow to `http://127.0.0.1:8000/admin` and Log in like 'Adminitraror':
 ```
-Username: Admin
-Password: 11111111
+Username: admin
+Password: 1
 ```
-Then, if click on the 'Insert New' in the page header, returns back next page:
+That will open to You The Django admin application page, where You have the ability to change any table's data what You want.
 
-![alt text](https://raw.githubusercontent.com/Leongard91/SDPC/main/screenshots/Insert.JPG)
+![ADMIN page]()
 
-Here You can choose the catalog, what You want to update, and enter all necessary information. Using JavaScipt code, the page shows You can be updated inputs only. 
 
-Into some catalogs, You can insert positions title, price, and even upload images.
-Application takes an image in '.png' format, rename and save it in '/static/img' folder.
-You don't have png? Try '.jpg' format! The application automatically converts the jpg to png and does some operations.
-
-### Access:
-The "SDPC" application is opened for anybody and available on my GitHub page: [Leongard91/SDPC](https://github.com/Leongard91/SDPC)
-
-Database information based on [STRAJ](straj.ua) company page.
+### ACCESS:
+The "Rental" application is opened for anybody and available on my GitHub page: [Leongard91/rental](https://github.com/Leongard91/rental)
 
 Enjoy!

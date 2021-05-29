@@ -71,7 +71,7 @@ def search(f):
                 ratings =[response.rating for response in transport.owner.received_responses.all()]
                 responses_count = len(ratings)
                 try: owner_rating = round((sum(ratings) / len(ratings)), 1)
-                except: owner_rating = 1.0
+                except: owner_rating = 5.0
                 offers.append((owner_rating, responses_count,  total_price, transport))
 
             instance['offers'] = offers
@@ -151,7 +151,7 @@ def get_offers(request):
         ratings = [response.rating for response in offer.owner.received_responses.all()]
         responses_count = len(ratings)
         try: owner_rating = round((sum(ratings) / len(ratings)), 1)
-        except: owner_rating = 1.0
+        except: owner_rating = 5.0
         count_rating_offer.append((responses_count, owner_rating, offer))
 
     # Generate lists of offers
@@ -278,7 +278,7 @@ def offer_filter(request):
     except:
         filtered_max_price = 0
         filtered_min_price = 0
-
+    
     # Construct data for response
     data_unsorted = []
     for owner_rating, responses_count, total_price, offer in filtered_transport:
@@ -341,7 +341,7 @@ def details_view(request, transport_id):
     ratings =[response.rating for response in offer.owner.received_responses.all()]
     responses_count = len(ratings)
     try: owner_rating = round((sum(ratings) / len(ratings)), 1)
-    except: owner_rating = 1.0
+    except: owner_rating = 5.0
     instance['responses_count'] = responses_count
     instance['owner_rating'] = owner_rating
 
@@ -366,6 +366,12 @@ def details_view(request, transport_id):
             instance['error'] = '"Pick-up" date and "Drop-off" date need to be entered.'
             return render(request, 'transport/details.html', instance)
         
+        for deal in offer.deals.all():
+            if (deal.start_date <= start_date and close_date <= deal.close_date) or (start_date <= deal.start_date and deal.close_date <= close_date) or \
+                (deal.start_date <= start_date <= deal.close_date) or (deal.start_date <= close_date <= deal.close_date):
+                instance['error'] = "Already booked in chosen dates. Choose other dates."
+                return render(request, 'transport/details.html', instance)
+
         # Get aditionals from post
         additionals = []
         for add in adds:
@@ -396,7 +402,7 @@ def user_view(request, id):
     ratings =[response.rating for response in user_page_info.received_responses.all()]
     responses_count = len(ratings)
     try: owner_rating = round((sum(ratings) / len(ratings)), 1)
-    except ZeroDivisionError: owner_rating = 1.0
+    except ZeroDivisionError: owner_rating = 5.0
     instance['responses_count'] = responses_count
     instance['owner_rating'] = owner_rating
 
