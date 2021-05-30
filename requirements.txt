@@ -1,2 +1,3 @@
 Pillow>=8.2.0
 Django>=3.2.3
+django_cleanup>=5.2.0
