@@ -1,5 +1,5 @@
 # Rental
-#### Video Demo: https://youtu.be/4S0UPUmRkbE
+
 ### Distinctiveness and Complexity:
 
 "Rental" is a platform where You can find and rent any type of transport, or rent out your own transport.
